@@ -17,7 +17,7 @@ public static class Data {
      * Array of all course names.
      * Each index corresponds exactly to the index in any of the courses[].
      */
-    public static String[] course_names;
+    public static String[] courseNames;
 
     /**
      * Stores data about the preferences of an individual tutor.
@@ -27,7 +27,7 @@ public static class Data {
         public String name;
         public int[] slots; // ??? [0,2] on preference
         public int[] courses; // ??? [0,2] on preference
-        public int adjacent_pref; // ??? [0,2] on preference
+        public int adjacentPref; // ??? [0,2] on preference
     }
 
     /**
