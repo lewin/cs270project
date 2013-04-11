@@ -1,0 +1,37 @@
+{
+    "courseNames":["cs61a","cs61b","cs61c"],
+
+    // array of tutor objects
+    "tutors":
+    [
+        {
+        "tid":0,
+        "name":"Alice",
+        "slots":[2,0],
+        "courses":[1,1,1],
+        "adjacentPref":1
+        },
+        {
+        "tid":1,
+        "name":"Bob",
+        "slots":[0,2],
+        "courses":[1,1,1],
+        "adjacentPref":1
+        }
+    ],
+    
+    // array of slot objects
+    "slots":
+    [
+        {
+        "sid":0,
+        "name":"CORY=11:00-12:00",
+        "courses":[2,2,2]
+        },
+        {
+        "sid":1,
+        "name":"SODA=11:00-12:00",
+        "courses":[2,2,2]
+        }
+    ]
+}
