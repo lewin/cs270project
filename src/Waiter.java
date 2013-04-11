@@ -5,9 +5,6 @@
 
 public class Waiter implements Weighting {
     
-    /*
-     * The actual weight function.
-     */
     public double weight(Tutor t, Slot s) {
         double retval = 0.00;
         // does the tutor want to be in this slot? 
@@ -16,6 +13,25 @@ public class Waiter implements Weighting {
         for (int i = 0; i < t.courses.length; ++i) {
             retval += t.courses[i] * s.courses[i] * 1;
         }
+        // does this new match support the adjacency preference?
+        int adj_pref = 0;
+        switch (t.adjacentPref) {
+            case 0: // disprefer
+                adj_pref = -1;
+                break;
+            case 1: // ambivalent
+                adj_pref = 0;
+                break;
+            case 2: // prefer
+                adj_pref = 1;
+                break;
+        }
+        for (Slot adjslot : s.adjacentSlots) {
+            if (adjslot.tutor == t) {
+                retval += adj_pref * 2;
+            }
+        }
+
         return retval;
     }
 

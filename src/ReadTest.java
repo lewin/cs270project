@@ -14,12 +14,14 @@ public class ReadTest {
             BufferedReader br = new BufferedReader(
                 new FileReader("test/t0.json"));
             Data obj = gson.fromJson(br,Data.class);
+            obj.init();
 
             System.out.println(obj);
 
             for (Tutor t : obj.tutors) {
                 for (Slot s : obj.slots) {
                     System.out.println("weighting (Tutor " + t + ", Slot " + s + "): " + w.weight(t,s));
+                    System.out.println("slot's assigned tutor: " + s.tutor);
                 }
             }
 

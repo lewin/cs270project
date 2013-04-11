@@ -7,3 +7,6 @@
 
 # swp
 .*.swp
+
+# except the libraries in jar
+!lib/*.jar

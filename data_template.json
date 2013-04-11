@@ -2,7 +2,7 @@
 
 {
     // array of strings which denote to classes
-    "courseNames":"array:strings, indices correspond to 'courses' arrays",
+    "courseNames":["string: indices correspond to 'courses' arrays"],
 
     // array of tutor objects
     "tutors":
@@ -11,9 +11,9 @@
         "tid":"int:tutor uid",
         "name":"string:tutor name",
         // 0=disprefer (often cannot make), 1=ambivalent, 2=prefer
-        "slots":"array:ints in [0,2] describing preference level of each slot",
+        "slots":["int: [0,2] describing preference level of each slot"],
         // 0=have not taken, 1=taken, 2=prefer
-        "courses":"array:ints in [0,2] describing preference level per course",
+        "courses":["int: [0,2] describing preference level per course"],
         // 0=disprefer, 1=ambivalent, 2=prefer
         "adjacentPref":"int in [0,2] describing preference level"
         }
@@ -25,8 +25,9 @@
         {
         "sid":"int:corresponds exactly to index in the tutor 'slots' array",
         "name":"string:name describing the slot (OFFICE=START-END)?",
+        "adjacentSlotIDs":["int: sids of slots adjacent to this one"],
         // 0=wrong office, 1=class in session, 2=other
-        "courses":"array:ints in [0,2] describing preference level per course",
+        "courses":["int: [0,2] describing preference level per course"],
         }
     ]
 }

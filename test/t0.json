@@ -5,10 +5,15 @@
     "tutors":
     [
         {
+        // uid for this tutor
         "tid":0,
+        // name for this tutor; just for reference
         "name":"Alice",
+        // preferences for each slot
         "slots":[2,0],
+        // preferences for each course
         "courses":[1,1,1],
+        // adjacency preference
         "adjacentPref":1
         },
         {
@@ -24,13 +29,19 @@
     "slots":
     [
         {
+        // array index for this slot
         "sid":0,
+        // name for this slot; just for reference
         "name":"CORY=11:00-12:00",
+        // slots adjacent to this one
+        "adjacentSlotIDs":[],
+        // preferences for each course
         "courses":[2,2,2]
         },
         {
         "sid":1,
         "name":"SODA=11:00-12:00",
+        "adjacentSlotIDs":[],
         "courses":[2,2,2]
         }
     ]
