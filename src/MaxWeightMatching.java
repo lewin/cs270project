@@ -1,5 +1,7 @@
 import java.io.*;
 import java.util.*;
+
+// no need for this anymore
 public class MaxWeightMatching {
     
     private static int [] price;
