@@ -44,6 +44,24 @@ public class Data {
         }
     }
 
+    /**
+     * Returns a string of all assignments in the set of slots.
+     * Output is formatted in rows of "[SLOT_ID] [TUTOR_ID]"
+     * if no slot is assigned to the tutor, [TUTOR_ID] is -1.
+     */
+    public String assignments() {
+        String ret = "";
+        for (Slot s : slots) {
+            ret += String.valueOf(s.sid) + " ";
+            if (s.tutor != null) {
+                ret += String.valueOf(s.tutor.tid) + "\n";
+            } else {
+                ret += "-1\n";
+            }
+        }
+        return ret;
+    }
+
     @Override
     public String toString() {
         return "Data {" + 
