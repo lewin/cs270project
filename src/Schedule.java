@@ -1,8 +1,10 @@
 /**
- * Scheduler class.
+ * Schedule class.
  * Main scheduling class. 
  * Loads slot and tutor data from JSON and performs matching based on 
  * additional options.
+ *
+ * usage: Schedule [jsonfile]
  */
 import java.io.BufferedReader;
 import java.io.FileReader;
