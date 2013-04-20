@@ -37,6 +37,7 @@ public class IntegerLP {
             }
             System.out.println("objective: " + objective.trim());
             solver.strSetObjFn(objective.trim());
+            solver.setMaxim(); // sets the obj function to maximize
 
             // constraints: for each tutor, only assign to one slot
             String constraint;
@@ -48,7 +49,7 @@ public class IntegerLP {
                     new String(new char[s.length]).replace("\0", "1 ").trim() +
                     constraint.substring(2*i*s.length + s.length + 1);
                 System.out.println("constraint " + i + ": " + constraint);
-                solver.strAddConstraint(constraint, LpSolve.GE, 1);
+                solver.strAddConstraint(constraint, LpSolve.LE, 1);
             }
 
             // ilp solution

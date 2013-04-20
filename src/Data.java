@@ -59,7 +59,7 @@ public class Data {
                 ret += "-1\n";
             }
         }
-        return ret;
+        return ret.trim();
     }
 
     @Override
