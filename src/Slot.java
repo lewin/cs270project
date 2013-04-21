@@ -2,13 +2,25 @@
  * Stores data about the preferences of an individual office hour slot.
  */
 public class Slot {
+    // identifying information
     public int sid;
-    public String name; // probably "OFFICE=START-END" or something
+    public String name;
+    public String day;
+    public int hour;
+    public String office;
+
+    // preference information
     public int[] courses;
     public int[] adjacentSlotIDs;
     public Slot[] adjacentSlots;
+    public Slot[] simultaneousSlots;
+
     // the tutor currently matched to this slot 
     public Tutor tutor = null; 
+
+    public boolean simultaneous(Slot s) {
+        return day.equals(s.day) && (hour == s.hour);
+    }
 
     @Override
     public String toString() {

@@ -2,11 +2,16 @@
  * Stores data about the preferences of an individual tutor.
  */
 public class Tutor {
+    // identifying information
     public int tid;
     public String name;
-    public int[] slots; // ??? [0,2] on preference
-    public int[] courses; // ??? [0,2] on preference
-    public int adjacentPref; // ??? [0,2] on preference
+
+    // preference information
+    public int[] timeSlots;
+    public int[] officePrefs;
+    public int[] courses;
+    public int adjacentPref;
+
     // the slot currently matched to this tutor
     public Slot slot = null;
 

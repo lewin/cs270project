@@ -36,10 +36,6 @@ public class Schedule {
             Data dat = gson.fromJson(br,Data.class);
             dat.init();
 
-            System.out.println(dat);
-
-            System.out.println(dat.assignments());
-
             Waiter w = new Waiter();
 
             IntegerLP.match(dat.tutors, dat.slots, w);
@@ -47,7 +43,7 @@ public class Schedule {
 
             System.out.println(dat.assignments());
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
