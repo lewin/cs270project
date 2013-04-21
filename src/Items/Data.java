@@ -1,3 +1,4 @@
+package Items;
 /**
  * Data.java contains the classes for the Java object representation for
  * our data elements.
@@ -6,6 +7,7 @@
  *   * Office hour slots (and their preferences)
  * Populate these classes using the Gson library
  */
+
 
 import java.util.Arrays;
 

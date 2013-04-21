@@ -1,3 +1,7 @@
+package Weighting;
+import Items.Slot;
+import Items.Tutor;
+
 /**
  * A weight function. Loyal and mysterious.
  */

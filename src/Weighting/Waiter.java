@@ -1,3 +1,7 @@
+package Weighting;
+import Items.Slot;
+import Items.Tutor;
+
 /**
  * A weight function. A newbie still learning the ropes.
  *

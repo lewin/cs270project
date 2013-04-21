@@ -1,3 +1,5 @@
+package MaxWeightMatching;
+
 import java.util.*;
 public class Graph {
     private ArrayList neighbors [];

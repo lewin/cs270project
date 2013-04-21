@@ -1,4 +1,11 @@
+package MaxWeightMatching;
+
 import java.util.*;
+
+import Weighting.Weighting;
+
+import Items.Slot;
+import Items.Tutor;
 
 public class Matcher {
     private static Tutor [] t;
@@ -119,20 +126,6 @@ public class Matcher {
             updatePrices();
             if (end == -1) break;
             augmentPath (end);
-        }
-    }
-    
-    static class Edge implements Comparable <Edge> {
-        public int from, to;
-        public double weight;
-        public Edge (int from, int to, double weight){
-            this.from = from;
-            this.to = to;
-            this.weight = weight;
-        }
-        
-        public int compareTo (Edge other) {
-            return Double.compare (weight, other.weight);
         }
     }
     

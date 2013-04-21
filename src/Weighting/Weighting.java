@@ -1,3 +1,7 @@
+package Weighting;
+import Items.Slot;
+import Items.Tutor;
+
 /**
  * Interface for weight functions on Tutors and Slots.
  * Provides a single function which gives the weight of an edge (assignment) 

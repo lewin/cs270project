@@ -1,8 +1,15 @@
+package LPSolve;
 /*
  * Models the problem as a linear program and solves using lp_solve's ILP.
  */
 
+
 import java.util.*;
+
+import Weighting.Weighting;
+
+import Items.Slot;
+import Items.Tutor;
 
 import lpsolve.*;
 

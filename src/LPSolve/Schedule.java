@@ -1,3 +1,4 @@
+package LPSolve;
 /**
  * Schedule class.
  * Main scheduling class. 
@@ -6,9 +7,15 @@
  *
  * usage: Schedule [jsonfile]
  */
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+
+
+import Items.Data;
+
+import Weighting.Waiter;
 
 import com.google.gson.Gson;
 
