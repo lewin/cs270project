@@ -16,7 +16,9 @@ public class Slot {
     public Slot[] simultaneousSlots;
 
     // the tutor currently matched to this slot 
-    public Tutor tutor = null; 
+    public Tutor tutor = null;
+    // if there is another tutor for this slot
+    public Tutor tutor2 = null;
 
     public boolean simultaneous(Slot s) {
         return day.equals(s.day) && (hour == s.hour);

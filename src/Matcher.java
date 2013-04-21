@@ -5,46 +5,81 @@ public class Matcher {
     private static Slot [] s;
     private static Graph g;
     private static Weighting w;
-    private static int n;
+    private static int n, sz;
     
     public static void match (Tutor [] tutors, Slot [] slots, Weighting waiter) {
         t = tutors; s = slots; w = waiter;
         
         n = 2 * t.length + s.length; // add t.length dummy variables
-        int sz = t.length + s.length; // anything indexed after sz is a dummy variable
+        sz = t.length + s.length; // anything indexed after sz is a dummy variable
         
-        // repeat three times:
-        for (int r = 0; r < 3; r++) {
-            // initialize graph
-            g = new Graph (n);
-            price = new double [n];
-            partner = new int [n];
-            matched = new boolean [n];
-            Arrays.fill (partner, -1);
-            
-            for (int i = 0; i < t.length; i++) {
-                g.addEdge (i, i + sz, 0);
-                matched [i] = true;
-                matched [i + sz] = true;
-                partner [i] = i + sz;
-                partner [i + sz] = i;
-            }
+        // run twice, but only assign one slot one tutor
+        boolean [] vis = new boolean [s.length];
+        for (int r = 0; r < 2; r++) {
+            init();
             
             // compute matching
-            for (int i = 0; i < t.length; i++) {
-                for (int j = 0; j < s.length; j++) {
-                    updateMatching (i, j + t.length, w.weight(t[i], s[j]));
+            for (int j = 0; j < s.length; j++) {
+                if (!vis [j]) { // on second iteration, ignore matched slots
+                    for (int i = 0; i < t.length; i++) {         
+                        updateMatching (i, j + t.length, w.weight(t[i], s[j]));
+                    }
                 }
             }
             
             // assign partners
             for (int i = 0; i < t.length; i++) {
                 int k = partner [i] - t.length;
-                if (t.length > sz) continue;
+                if (k > s.length) continue;
                 
-                t [i].slot = s [k];
+                if (t [i].slot == null)
+                    t [i].slot = s [k];
+                else 
+                    t [i].slot2 = s [k];
+                
                 s [k].tutor = t [i];
+                vis [k] = true;
             }
+        }
+        
+        
+        // one more time
+        init();
+        // now check if any tutors still need slots
+        for (int j = 0; j < s.length; j++) {
+            for (int i = 0; i < t.length; i++) {
+                if (t [i].officer && t [i].slot2 == null)
+                    updateMatching (i, j + t.length, w.weight(t[i], s[j]));
+            }
+        }
+        
+        for (int i = 0; i < t.length; i++) {
+            int k = partner [i] - t.length;
+            if (k > s.length) continue;
+            
+            t [i].slot2 = s [k];
+            if (s [k].tutor == null)
+                s [k].tutor = t [i];
+            else 
+                s [k].tutor2 = t [i];
+        }
+    }
+    
+    private static void init() {
+     // initialize graph
+        g = new Graph (n);
+        price = new double [n];
+        partner = new int [n];
+        matched = new boolean [n];
+        Arrays.fill (partner, -1);
+        
+        // match to dummy variables
+        for (int i = 0; i < t.length; i++) {
+            g.addEdge (i, i + sz, 0);
+            matched [i] = true;
+            matched [i + sz] = true;
+            partner [i] = i + sz;
+            partner [i + sz] = i;
         }
     }
     
