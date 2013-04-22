@@ -1,8 +1,7 @@
-package LPSolve;
-/*
+/**
  * Models the problem as a linear program and solves using lp_solve's ILP.
  */
-
+package LPSolve;
 
 import java.util.*;
 

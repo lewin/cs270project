@@ -1,8 +1,9 @@
-package Items;
-
 /**
  * Stores data about the preferences of an individual office hour slot.
  */
+
+package Items;
+
 public class Slot {
     // identifying information
     public int sid;

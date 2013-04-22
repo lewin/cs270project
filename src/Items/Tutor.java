@@ -1,8 +1,9 @@
-package Items;
-
 /**
  * Stores data about the preferences of an individual tutor.
  */
+
+package Items;
+
 public class Tutor {
     // identifying information
     public int tid;

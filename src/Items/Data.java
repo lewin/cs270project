@@ -1,4 +1,3 @@
-package Items;
 /**
  * Data.java contains the classes for the Java object representation for
  * our data elements.
@@ -8,6 +7,7 @@ package Items;
  * Populate these classes using the Gson library
  */
 
+package Items;
 
 import java.util.Arrays;
 

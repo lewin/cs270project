@@ -1,13 +1,12 @@
-package Weighting;
-import Items.Slot;
-import Items.Tutor;
-
 /**
  * A weight function. A newbie still learning the ropes.
  *
  * Weights only on time availability. Very simple.
  */
 
+package Weighting;
+import Items.Slot;
+import Items.Tutor;
 
 public class Waiter implements Weighting {
 
