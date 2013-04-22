@@ -21,7 +21,8 @@
         {
         "tid":1,
         "name":"Bob Brown",
-        "slots":[0,2],
+        "timeSlots":[0,2],
+        "officePrefs":[0,2],
         "courses":[1,1,1],
         "adjacentPref":1
         }
