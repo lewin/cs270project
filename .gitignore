@@ -5,8 +5,11 @@
 *.war
 *.ear
 
+# Eclipse 
+.classpath
+
 # swp
 .*.swp
 
-# except the libraries in jar
+# except the jars (libraries) in lib
 !lib/*.jar
