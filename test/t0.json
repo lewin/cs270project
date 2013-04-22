@@ -5,20 +5,22 @@
     "tutors":
     [
         {
-        // uid for this tutor
+        // compserv's id for this tutor
         "tid":0,
         // name for this tutor; just for reference
-        "name":"Alice",
-        // preferences for each slot
-        "slots":[2,0],
-        // preferences for each course
+        "name":"Alice Allison",
+        // preferences for each time, uses "slots" ordering
+        "timeSlots":[2,2],
+        // office preferences, uses "slots" ordering; 0 = unavailable,
+        "officePrefs":[-2,2],
+        // preferences for each course corresponding to "courseNames" order
         "courses":[1,1,1],
         // adjacency preference
         "adjacentPref":1
         },
         {
         "tid":1,
-        "name":"Bob",
+        "name":"Bob Brown",
         "slots":[0,2],
         "courses":[1,1,1],
         "adjacentPref":1
@@ -31,18 +33,28 @@
         {
         // array index for this slot
         "sid":0,
-        // name for this slot; just for reference
-        "name":"CORY=11:00-12:00",
-        // slots adjacent to this one
-        "adjacentSlotIDs":[],
+        // name for this slot; uses compserv's internal ID's; basically useless
+        "name":"InternalSlot121",
+        // array of slot IDs of slots adjacent to this one
+        "adjacentSlotIDs":[1],
         // preferences for each course
-        "courses":[2,2,2]
+        // should be better customized in a later semester
+        "courses":[0,0,0],
+        // day of the week
+        "day":"Monday",
+        // hour
+        "hour":11,
+        // office
+        "office":"CORY"
         },
         {
         "sid":1,
-        "name":"SODA=11:00-12:00",
-        "adjacentSlotIDs":[],
-        "courses":[2,2,2]
+        "name":"InternalSlot122",
+        "adjacentSlotIDs":[0],
+        "courses":[1,1,1],
+        "day":"Monday",
+        "hour":11,
+        "office":"SODA"
         }
     ]
 }

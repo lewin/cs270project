@@ -9,13 +9,17 @@
     [
         {
         "tid":"int:tutor uid",
-        "name":"string:tutor name",
+        "name":"string:tutor first and last name",
         // 0=disprefer (often cannot make), 1=ambivalent, 2=prefer
-        "slots":["int: [0,2] describing preference level of each slot"],
-        // 0=have not taken, 1=taken, 2=prefer
-        "courses":["int: [0,2] describing preference level per course"],
-        // 0=disprefer, 1=ambivalent, 2=prefer
-        "adjacentPref":"int in [0,2] describing preference level"
+        "timeSlots":["int: [0,2] describing preference level of each slot"],
+        // 0=disprefer (often cannot make)
+        // -1 = weakly prefers other office, -2 = strongly prefers other office
+        // 1 = weakly prefers this office, 2 = strongly prefers this office
+        "officePrefs":["int: [-2,2] describing preference level of each slot"],
+        // -1=have not taken, 0=currently taking, 1=taken, 2=prefer
+        "courses":["int: [-1,2] describing preference level per course"],
+        // -1 = does not want adjacent, 0 = indifferent, 1 = prefers adjacent
+        "adjacentPref":"int in [-1,1] describing preference level"
         }
     ],
     
@@ -23,11 +27,17 @@
     "slots":
     [
         {
+        // 0 - 29 correspond to Cory office, Monday 11am to Friday 4pm
+        // 30 - 59 correspond to Soda office slots
         "sid":"int:corresponds exactly to index in the tutor 'slots' array",
-        "name":"string:name describing the slot (OFFICE=START-END)?",
+        "name":"string:name describing the slot; useless",
         "adjacentSlotIDs":["int: sids of slots adjacent to this one"],
-        // 0=wrong office, 1=class in session, 2=other
-        "courses":["int: [0,2] describing preference level per course"],
+        // currently: 1 if CS/MATH course in Soda or EE/PHYS course in Cory
+        // otherwise, 0
+        "courses":["int: [0,1] describing preference level per course"],
+        "day":"string:day of the week",
+        "hour":"int: [11, 16] for hours 11am to 4pm",
+        "office":"string:SODA or CORY"
         }
     ]
 }
