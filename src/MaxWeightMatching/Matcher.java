@@ -21,14 +21,14 @@ public class Matcher {
         sz = t.length + s.length; // anything indexed after sz is a dummy variable
         
         // run twice, but only assign one slot one tutor
-        boolean [] vis = new boolean [s.length];
+        boolean [] ignore = new boolean [s.length];
         for (int r = 0; r < 2; r++) {
             init();
             
             // compute matching
-            for (int j = 0; j < s.length; j++) {
-                if (!vis [j]) { // on second iteration, ignore matched slots
-                    for (int i = 0; i < t.length; i++) {         
+            for (int i = 0; i < t.length; i++) {
+                for (int j = 0; j < s.length; j++) {
+                    if (!ignore [j]) { // on second iteration, ignore matched slots
                         updateMatching (i, j + t.length, w.weight(t[i], s[j]));
                     }
                 }
@@ -37,7 +37,7 @@ public class Matcher {
             // assign partners
             for (int i = 0; i < t.length; i++) {
                 int k = partner [i] - t.length;
-                if (k > s.length) continue;
+                if (k >= s.length) continue;
                 
                 if (t [i].slot == null)
                     t [i].slot = s [k];
@@ -45,7 +45,7 @@ public class Matcher {
                     t [i].slot2 = s [k];
                 
                 s [k].tutor = t [i];
-                vis [k] = true;
+                ignore [k] = true;
             }
         }
         
@@ -53,16 +53,16 @@ public class Matcher {
         // one more time
         init();
         // now check if any tutors still need slots
-        for (int j = 0; j < s.length; j++) {
-            for (int i = 0; i < t.length; i++) {
-                if (t [i].officer && t [i].slot2 == null)
+        for (int i = 0; i < t.length; i++) {
+            if (t [i].officer && t [i].slot2 == null)
+                for (int j = 0; j < s.length; j++) {
                     updateMatching (i, j + t.length, w.weight(t[i], s[j]));
             }
         }
         
         for (int i = 0; i < t.length; i++) {
             int k = partner [i] - t.length;
-            if (k > s.length) continue;
+            if (k >= s.length) continue;
             
             t [i].slot2 = s [k];
             if (s [k].tutor == null)
@@ -97,16 +97,16 @@ public class Matcher {
     private static void updateMatching (int a, int b, double c) {
         g.addEdge (a, b, c);
         double d = c - price [a] - price [b];
-        if (d < 0) return; // no need to further process this case
+        if (d <= 0) return; // no need to further process this case
         
         // get a feasible matching
         price [a] += d;
         // rematch a and b if necessary
-        if (partner [a] != -1) {
+        if (matched [a]) {
             matched [partner [a]] = false;
             partner [partner [a]] = -1;
         }
-        if (partner [b] != -1) {
+        if (matched [b]) {
             matched [partner [b]] = false;
             partner [partner [b]] = -1;
         }
