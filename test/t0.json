@@ -16,7 +16,8 @@
         // preferences for each course corresponding to "courseNames" order
         "courses":[1,1,1],
         // adjacency preference
-        "adjacentPref":1
+        "adjacentPref":1,
+		"numAssignments":2
         },
         {
         "tid":1,
@@ -24,7 +25,8 @@
         "timeSlots":[0,2],
         "officePrefs":[0,2],
         "courses":[1,1,1],
-        "adjacentPref":1
+        "adjacentPref":1,
+		"numAssignments":1
         }
     ],
     

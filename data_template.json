@@ -19,7 +19,8 @@
         // -1=have not taken, 0=currently taking, 1=taken, 2=prefer
         "courses":["int: [-1,2] describing preference level per course"],
         // -1 = does not want adjacent, 0 = indifferent, 1 = prefers adjacent
-        "adjacentPref":"int in [-1,1] describing preference level"
+        "adjacentPref":"int in [-1,1] describing preference level",
+		"numAssignments":"int in [1,2]; number of tutoring slots to assign this tutor"
         }
     ],
     
