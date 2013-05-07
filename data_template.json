@@ -12,7 +12,7 @@
         "name":"string:tutor first and last name",
         // 0=disprefer (often cannot make), 1=ambivalent, 2=prefer
         "timeSlots":["int: [0,2] describing preference level of each slot"],
-        // 0=disprefer (often cannot make)
+        // 0 = disprefer (cannot make)
         // -1 = weakly prefers other office, -2 = strongly prefers other office
         // 1 = weakly prefers this office, 2 = strongly prefers this office
         "officePrefs":["int: [-2,2] describing preference level of each slot"],
@@ -20,7 +20,7 @@
         "courses":["int: [-1,2] describing preference level per course"],
         // -1 = does not want adjacent, 0 = indifferent, 1 = prefers adjacent
         "adjacentPref":"int in [-1,1] describing preference level",
-		"numAssignments":"int in [1,2]; number of tutoring slots to assign this tutor"
+        "numAssignments":"int in [1,2]; number of tutoring slots to assign this tutor"
         }
     ],
     
