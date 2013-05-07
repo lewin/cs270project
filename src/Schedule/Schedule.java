@@ -111,6 +111,7 @@ public class Schedule {
                 fout.close();
             } else {
                 System.out.println(dat.assignments());
+                System.out.println(Evaluator.evaluate (dat, w));
             }
 
         } catch (IOException e) {
