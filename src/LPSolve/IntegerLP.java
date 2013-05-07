@@ -23,7 +23,7 @@ public class IntegerLP {
     private static ArrayList<String> uniqueTimes;
     private static HashMap<String, ArrayList<Integer>> times;
     
-    private static final int MAX_ASSIGNMENTS_PER_TUTOR = 2;
+    private static final double MAX_ASSIGNMENTS_PER_TUTOR = 2.0;
 
     public static void match (Tutor [] tutors, Slot [] slots, Weighting waiter) {
         t = tutors; s = slots; w = waiter;
@@ -49,15 +49,19 @@ public class IntegerLP {
             for (int j = 0; j < s.length; ++j) {
                 solver.addConstraint(
                     getConstraintSlotAtLeastOne(j), 
-                    LpSolve.EQ, 
-                    1);
+                    LpSolve.GE, 
+                    1.0);
             }
-            // for each tutor, cannot assign more than twice
+            // for each tutor, cannot assign more than twice, but at least once
             for (int i = 0; i < t.length; ++i) {
                 solver.addConstraint(
-                    getConstraintTutorAtMostN(i), 
+                    getConstraintTutorN(i), 
                     LpSolve.LE, 
                     MAX_ASSIGNMENTS_PER_TUTOR);
+                solver.addConstraint(
+                    getConstraintTutorN(i), 
+                    LpSolve.GE, 
+                    t[i].numAssignments); // TODO replace with assignments/per
             }
             // for each tutor, cannot to assign to two slots that share time
             calculateSimultaneousSlots();
@@ -66,13 +70,15 @@ public class IntegerLP {
                     solver.addConstraint(
                         getConstraintTutorNoSimultaneous(i, time),
                         LpSolve.LE, 
-                        1);
+                        1.0);
                 }
             }
 
             // ilp solution
             solver.solve();
-
+            //System.out.println("the linear program");
+            //solver.printLp();
+            
             // use solution to set the assignments of each tutor
             setMatching(solver.getPtrVariables());
 
@@ -84,21 +90,23 @@ public class IntegerLP {
         }
     }
 
+    // NOTE: LP solve double[] objectives are 1-indexed arrays...
     private static double[] getObjective() {
-        double[] obj = new double[n];
+        double[] obj = new double[n+1];
         for (int i = 0; i < t.length; ++i) {
             for (int j = 0; j < s.length; ++j) {
-                obj[(s.length * i) + j] = w.weight(t[i], s[j]);
+                obj[(s.length * i) + j + 1] = w.weight(t[i], s[j]);
             }
         }
         return obj;
     }
 
-    private static double[] getConstraintTutorAtMostN(int tutindex) {
-        double[] constraint = new double[n];
+    // NOTE: LP solve double[] objectives are 1-indexed arrays...
+    private static double[] getConstraintTutorN(int tutindex) {
+        double[] constraint = new double[n+1];
         Arrays.fill(constraint, 0);
         for (int j = 0; j < s.length; ++j) {
-            constraint[(s.length * tutindex) + j] = 1;
+            constraint[(s.length * tutindex) + j + 1] = 1;
         }
         return constraint;
     }
@@ -119,20 +127,22 @@ public class IntegerLP {
         }       
     }
 
+    // NOTE: LP solve double[] objectives are 1-indexed arrays...
     private static double[] getConstraintTutorNoSimultaneous(int tutindex, String time) {
-        double[] constraint = new double[n];
+        double[] constraint = new double[n+1];
         Arrays.fill(constraint, 0);
         for (Integer idx : times.get(time)) {
-            constraint[(s.length * tutindex) + idx] = 1;
+            constraint[(s.length * tutindex) + idx + 1] = 1;
         }
         return constraint;
     }
 
+    // NOTE: LP solve double[] objectives are 1-indexed arrays...
     private static double[] getConstraintSlotAtLeastOne(int slotindex) {
-        double[] constraint = new double[n];
+        double[] constraint = new double[n+1];
         Arrays.fill(constraint, 0);
         for (int i = 0; i < t.length; ++i) {
-            constraint[(s.length * i) + slotindex] = 1;
+            constraint[(s.length * i) + slotindex + 1] = 1;
         }
         return constraint;
     }
@@ -143,8 +153,16 @@ public class IntegerLP {
             for (int j = 0; j < s.length; ++j) {
                 k = results[(s.length * i) + j];
                 if (k > 0) {
-                    t[i].slot = s[j];
-                    s[j].tutor = t[i];
+                    if (t[i].slot == null) {
+                        t[i].slot = s[j];
+                    } else {
+                        t[i].slot2 = s[j];
+                    }
+                    if (s[j].tutor == null) {
+                        s[j].tutor = t[i];
+                    } else {
+                        s[j].tutor2 = t[i];
+                    }
                 }
             }
         }

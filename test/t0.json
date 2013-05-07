@@ -17,7 +17,7 @@
         "courses":[1,1,1],
         // adjacency preference
         "adjacentPref":1,
-		"numAssignments":2
+		"numAssignments":1
         },
         {
         "tid":1,

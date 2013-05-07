@@ -56,10 +56,12 @@ public class Data {
         for (Slot s : slots) {
             ret += String.valueOf(s.sid) + " ";
             if (s.tutor != null) {
-                ret += String.valueOf(s.tutor.tid) + "\n";
-            } else {
-                ret += "-1\n";
-            }
+                ret += String.valueOf(s.tutor.tid);
+            } 
+            if (s.tutor2 != null) {
+                ret += " " + String.valueOf(s.tutor2.tid);
+            } 
+            ret += "\n";
         }
         return ret.trim();
     }

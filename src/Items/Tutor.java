@@ -15,6 +15,7 @@ public class Tutor {
     public int[] courses;
     public int adjacentPref; 
     // does this tutor need two slots?
+    public int numAssignments;
     public boolean officer;
 
     // the slot currently matched to this tutor
