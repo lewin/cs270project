@@ -26,6 +26,23 @@ public class Slot {
     public boolean simultaneous(Slot s) {
         return day.equals(s.day) && (hour == s.hour);
     }
+    
+    public boolean adjacent (Slot s) {
+        for (int i = 0; i < adjacentSlots.length; i++)
+            if (adjacentSlots [i].equals(s))
+                return true;
+        return false;
+    }
+    
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Slot)) return false;
+        return sid == ((Slot)other).sid 
+            && name.equals (((Slot)other).name) 
+            && day.equals (((Slot)other).name) 
+            && hour == ((Slot)other).hour 
+            && office.equals (((Slot)other).office);
+    }
 
     @Override
     public String toString() {

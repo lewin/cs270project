@@ -13,7 +13,7 @@ public class Tutor {
     public int[] timeSlots;
     public int[] officePrefs;
     public int[] courses;
-    public int adjacentPref;
+    public int adjacentPref; 
     // does this tutor need two slots?
     public boolean officer;
 
