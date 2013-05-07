@@ -18,5 +18,6 @@ public class Waiter implements Weighting {
 
     // 0: unavailable, 1: ambivalent, 2: prefer
     private static double[] prefToW = {1, 10, 20};
+    // it seems that setting the unavailable preference <=0 makes bad solutions?
 
 }

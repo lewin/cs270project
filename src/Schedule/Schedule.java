@@ -44,7 +44,7 @@ public class Schedule {
             // which weighting to use
             OptionSpec<String> weighting =
                 parser.acceptsAll(Arrays.asList("w", "weighting"), 
-                "Waiter (default), Butler")
+                "Waiter (default), Butler, Chef")
                 .withRequiredArg().ofType(String.class)
                 .describedAs("name of Weighting"); 
             // optional file output
@@ -86,6 +86,8 @@ public class Schedule {
                     w = new Waiter();
                 } else if (weighting.value(options).equals("Butler")) {
                     w = new Butler();
+                } else if (weighting.value(options).equals("Chef")) {
+                    w = new Chef();
                 } else {
                     System.err.println("Invalid weight function");
                     System.exit(1);
