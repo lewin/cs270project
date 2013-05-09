@@ -13,18 +13,20 @@ public class Matcher {
     private static Graph g;
     private static Weighting w;
     private static int n, sz;
+    private static boolean [] ignore;
     
     public static void match (Tutor [] tutors, Slot [] slots, Weighting waiter) {
         t = tutors; s = slots; w = waiter;
         
-        n = 2 * t.length + s.length; // add t.length dummy variables
-        sz = t.length + s.length; // anything indexed after sz is a dummy variable
+        n = t.length + s.length;
+        sz = t.length;
         
         // run twice, but only assign one slot one tutor
-        boolean [] ignore = new boolean [s.length];
+        ignore = new boolean [s.length];
         for (int r = 0; r < 2; r++) {
             init();
             
+            System.out.println (t.length + " " + s.length);
             // compute matching
             for (int i = 0; i < t.length; i++) {
                 for (int j = 0; j < s.length; j++) {
@@ -36,9 +38,9 @@ public class Matcher {
             
             // assign partners
             for (int i = 0; i < t.length; i++) {
+                if (partner [i] == -1) continue;
                 int k = partner [i] - t.length;
                 if (k >= s.length) continue;
-                
                 if (t [i].slot == null)
                     t [i].slot = s [k];
                 else 
@@ -54,17 +56,21 @@ public class Matcher {
         init();
         // now check if any tutors still need slots
         for (int i = 0; i < t.length; i++) {
-            if (t [i].officer && t [i].slot2 == null)
+            if (t [i].slot == null || (t [i].officer && t [i].slot2 == null))
                 for (int j = 0; j < s.length; j++) {
                     updateMatching (i, j + t.length, w.weight(t[i], s[j]));
             }
         }
         
         for (int i = 0; i < t.length; i++) {
+            if (partner [i] == -1) continue;
             int k = partner [i] - t.length;
-            if (k >= s.length) continue;
             
-            t [i].slot2 = s [k];
+            if (t [i].slot == null)
+                t [i].slot = s [k];
+            else 
+                t [i].slot2 = s [k];
+            
             if (s [k].tutor == null)
                 s [k].tutor = t [i];
             else 
@@ -82,11 +88,17 @@ public class Matcher {
         
         // match to dummy variables
         for (int i = 0; i < t.length; i++) {
-            g.addEdge (i, i + sz, 0);
-            matched [i] = true;
-            matched [i + sz] = true;
-            partner [i] = i + sz;
-            partner [i + sz] = i;
+            for (int j = 0; j < s.length; j++) {
+                if (!ignore [j]) {
+                    g.addEdge (i, j + t.length, 0);
+                    if (!matched [i] && !matched [j + t.length]) {
+                        matched [i] = true;
+                        matched [j + t.length] = true;
+                        partner [i] = j + t.length;
+                        partner [j + t.length] = i;
+                    }
+                }
+            }
         }
     }
     
