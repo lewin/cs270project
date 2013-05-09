@@ -34,6 +34,6 @@ public class Gardener implements Weighting {
     }
 
     // 0: unavailable, 1: ambivalent, 2: prefer
-    private static double[] timePrefToW = { 1, 10000, 10006 };
+    private static double[] timePrefToW = { 1, 10, 20 };
 
 }

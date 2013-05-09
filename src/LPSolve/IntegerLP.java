@@ -37,7 +37,7 @@ public class IntegerLP {
             // the variables are bindings between tutors and slots
             LpSolve solver = LpSolve.makeLp(0, n);
             // make lp_solve shut up about things that aren't important
-            // solver.setVerbose(3);
+            solver.setVerbose(3);
             // set all variables to binary
             for (int i = 1; i < n + 1; ++i) {
                 solver.setBinary(i, true);
