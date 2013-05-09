@@ -26,10 +26,10 @@ public class Gardener implements Weighting {
 
         // Time slots: +1 if not preferred, +10 if ambivalent, +20 if preferred
         retval += timePrefToW[t.timeSlots[s.sid]];
-
+/*
         // Office preferences: +[0, 4] depending on office preference
         retval += (t.officePrefs[s.sid] + 2);
-
+*/
         return retval;
     }
 
