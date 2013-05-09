@@ -14,3 +14,13 @@
 
 # except the jars (libraries) in lib
 !lib/*.jar
+
+# LaTeX Stuff
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.gz
+*.toc
+*.vrb

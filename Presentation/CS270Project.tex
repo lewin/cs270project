@@ -1,0 +1,243 @@
+% Thanks to Dan Wang for the Beamer template!
+
+\documentclass[xcolor=svgnames, 18pt]{beamer}
+
+% Fill in variables below %
+% ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ %
+ \newcommand{\thesemester}{Spring 2013}
+\newcommand{\themidterm}{Improvements \\ on a \\ Time Slot Allocation Algorithm}
+\newcommand{\theauthors}{Lewin Gan, Allen Xiao, Edwin Liao}
+\newcommand{\theorganization}{CS270, Spring 2013 \\
+University of California, Berkeley}
+\newcommand{\thedate}{May 9, 2013}
+\newcommand{\thelanguage}{Java}
+% ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ %
+
+% Preamble %
+% ---------------------------------------------------------------------------- %
+\usepackage{url}
+\usepackage{relsize}
+\usepackage{color}
+\usepackage{listings}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{bm}
+\usepackage{framed}
+\usepackage{amsfonts}
+
+% Listings Package %
+\usepackage{listings}
+\lstset{numbers=left,
+    basicstyle=\ttfamily,
+    numberstyle=\small,
+    showstringspaces=false,
+    frame=leftline,
+    language=Java,
+    escapeinside=\$\$,
+    keywordstyle=\color{blue},
+    xleftmargin=16pt,
+    morecomment=[l]{//},
+    }
+
+\usetheme{Singapore}
+\usecolortheme[named=DarkSlateBlue]{structure} 
+\setbeamertemplate{mini frames}{}
+\beamertemplatenavigationsymbolsempty
+\setbeamertemplate{footline}[frame number]
+
+
+\title{\themidterm}
+\author{\theauthors}
+\institute{\theorganization}
+\date{\thedate}
+% ---------------------------------------------------------------------------- %
+
+\begin{document}
+
+% Title Page %
+% ---------------------------------------------------------------------------- %
+
+\begin{frame}[fragile]
+  \titlepage
+\end{frame}
+
+
+% Slide 1: Motivation %
+% ---------------------------------------------------------------------------- %
+
+\begin{frame}[fragile]
+  \frametitle{Motivation} 
+
+\uncover<2->{
+\begin{itemize}
+\item Schedule tutors into time/location slots
+\begin{itemize}
+\item HKN's undergrad tutoring hours
+\end{itemize}
+}
+
+\uncover<3->{
+\item Old implementation:
+\begin{itemize}
+\item Linear programming to find a feasible matching
+\item Unoptimized hill-climbing to improve solution
+\item Ran overnight to get satisfactory solution
+\end{itemize}
+}
+
+\uncover<4->{
+\item \emph{General Assignment Problem} (GAP)
+\begin{itemize}
+\item $n$ agents and $m$ tasks
+\item Each agent has a max capacity for tasks
+\item Minimize the total cost of assigning all tasks
+\end{itemize}
+}
+
+\uncover<5->{
+\item Maximum General Assignment Problem
+\begin{itemize}
+\item Still misses some parts of the model
+\end{itemize}
+}
+
+\end{itemize}
+\end{frame}
+
+
+% Slide 2: Features %
+% ---------------------------------------------------------------------------- %
+
+\begin{frame}[fragile]
+  \frametitle{Features} 
+
+\uncover<2->{
+\begin{itemize}
+\item Slots have preferences on:
+\begin{itemize}
+\item Courses tutored at that slot's location
+\end{itemize}
+}
+
+\uncover<3->{
+\item Tutors have preferences on:
+\begin{itemize}
+\item Courses they are confident in
+\item Times, locations
+\item Whether their assigned slots are adjacent
+\end{itemize}
+}
+
+\uncover<4->{
+\item Hard to encode the last preference without making the problem exponential in size
+}
+
+\end{itemize}
+\end{frame}
+
+
+% Slide 3: A New Approach %
+% ---------------------------------------------------------------------------- %
+
+\begin{frame}[fragile]
+  \frametitle{A New Approach}
+
+\uncover<2->{
+\begin{itemize}
+\item Assume $|S| \le k|T|$, where $k$ is the number of slots a tutor needs to take
+}
+
+\uncover<3->{
+\item Then each tutor will have exactly $k$ slots, and each slot has at least one tutor
+}
+
+\uncover<4->{
+\item Then, while we have remaining slots:
+}
+
+\begin{itemize}
+\uncover<5->{
+\item Use maximum weight matching to find an assignment from tutors to slots remaining
+}
+
+\uncover<6->{
+\item Remove the slots that were matched ($|T|$ of them)
+}
+
+\end{itemize}
+
+\uncover<7->{
+\item This will run at most $k$ times
+}
+
+\end{itemize}
+\end{frame}
+
+
+% Slide 4: Why this Approach? %
+% ---------------------------------------------------------------------------- %
+
+\begin{frame}[fragile]
+  \frametitle{Why this Approach?}
+
+\uncover<2->{
+\begin{itemize}
+\item Weights change depending on what is already matched
+
+\begin{itemize}
+\item (i.e. Tutor prefers slots that are adjacent)
+\end{itemize}
+}
+
+\uncover<3->{
+\item Some matchings infeasible
+
+\begin{itemize}
+\item (Tutors can not go to two slots that are at the same time)
+\end{itemize}
+}
+
+\uncover<4->{
+\item Iterations allow us to change weights in between
+}
+
+\end{itemize}
+\end{frame}
+
+
+% Slide 5: How Good is this Approach? %
+% ---------------------------------------------------------------------------- %
+
+\begin{frame}[fragile]
+  \frametitle{How Good is this Approach?}
+
+\uncover<2->{
+\begin{itemize}
+\item At each iteration, we choose a subset of slots such that the weights matching with tutors is optimal
+
+\begin{itemize}
+\item Let the first iteration have value $X$
+\end{itemize}
+}
+
+\uncover<3->{
+\item Then, any subset of $|T|$ slots maximally matched with the tutors will have value $\le X$
+}
+
+\uncover<4->{
+\item Worst case: algorithm will only find one such subset $X$, and other subsets zero; and optimal could have all subsets $X$
+
+\begin{itemize}
+\item Total value of $kX$
+\end{itemize}
+}
+
+\uncover<5->{
+\item Thus, we have a $k$-approximation (in our case, $k=2$)
+}
+
+\end{itemize}
+\end{frame}
+
+
+\end{document}
