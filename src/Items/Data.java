@@ -12,24 +12,23 @@ package Items;
 import java.util.Arrays;
 
 /**
- * Class directly populated by the JSON reader.
- * Each index corresponds exactly to the index in any of the courses[].
+ * Class directly populated by the JSON reader. Each index corresponds exactly
+ * to the index in any of the courses[].
  */
 public class Data {
 
     /**
-     * Array of all course names.
-     * Each index corresponds exactly to the index in any of the courses[].
+     * Array of all course names. Each index corresponds exactly to the index in
+     * any of the courses[].
      */
     public String[] courseNames;
     /**
      * Array of all tutors.
      */
     public Tutor[] tutors;
-    
+
     /**
-     * Array of all slots.
-     * Each index corresponds exactly to the slot's sid.
+     * Array of all slots. Each index corresponds exactly to the slot's sid.
      */
     public Slot[] slots;
 
@@ -47,9 +46,9 @@ public class Data {
     }
 
     /**
-     * Returns a string of all assignments in the set of slots.
-     * Output is formatted in rows of "[SLOT_ID] [TUTOR_ID]"
-     * if no slot is assigned to the tutor, [TUTOR_ID] is -1.
+     * Returns a string of all assignments in the set of slots. Output is
+     * formatted in rows of "[SLOT_ID] [TUTOR_ID]" if no slot is assigned to the
+     * tutor, [TUTOR_ID] is -1.
      */
     public String assignments() {
         String ret = "";
@@ -58,10 +57,10 @@ public class Data {
             if (s.tutor != null) {
                 ret += String.valueOf(s.tutor.tid);
 
-            } 
+            }
             if (s.tutor2 != null) {
                 ret += " " + String.valueOf(s.tutor2.tid);
-            } 
+            }
             ret += "\n";
         }
         return ret.trim();
@@ -69,11 +68,9 @@ public class Data {
 
     @Override
     public String toString() {
-        return "Data {" + 
-               "courseNames=" + Arrays.toString(courseNames) + 
-               ", tutors=" + Arrays.toString(tutors) + 
-               ", slots=" + Arrays.toString(slots) + "}";
+        return "Data {" + "courseNames=" + Arrays.toString(courseNames)
+                + ", tutors=" + Arrays.toString(tutors) + ", slots="
+                + Arrays.toString(slots) + "}";
     }
 
 }
-

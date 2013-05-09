@@ -131,7 +131,7 @@ def printSlot(slot_tuple, last, file):
     day = slot_tuple[1]
     hour = slot_tuple[2]
     file.write('{\n')
-    file.write('"sid":' + str(randint(100, 1000)) + ',\n')
+    file.write('"sid":' + str(timeslotId(office, day, hour)) + ',\n')
     file.write('"name":"' + str(day) + '",\n')
     file.write('"adjacentSlotIDs":' + str(adjSlotIDs(office, day, hour)) + ',\n')
     courses = [0 if (course_name[0:2] == "EE" and office) else 1 for course_name in course_names]
@@ -148,7 +148,7 @@ def printSlot(slot_tuple, last, file):
 # Print everything to file
 f = open('SampleDataSet.json', 'w')
 f.write('{\n\n')
-f.write('"courseNames":' + str(course_names) + '",\n\n')
+f.write('"courseNames":' + str(course_names) + ',\n\n')
 
 f.write('"tutors":[\n')
 people_names = [person_name for person_name in fake_people]

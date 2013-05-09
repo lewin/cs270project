@@ -9,24 +9,28 @@
 
 package Schedule;
 
-import joptsimple.OptionParser;
-import joptsimple.OptionSet;
-import joptsimple.OptionSpec;
-import com.google.gson.Gson;
-
-import java.io.File;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
-import java.io.PrintWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
 
+import joptsimple.OptionParser;
+import joptsimple.OptionSet;
+import joptsimple.OptionSpec;
 import Items.Data;
-import MaxWeightMatching.*;
-import LPSolve.*;
-import Weighting.*;
-import Weighting.*;
+import LPSolve.IntegerLP;
+import MaxWeightMatching.Matcher;
+import Weighting.Butler;
+import Weighting.Chef;
+import Weighting.Evaluator;
+import Weighting.Gardener;
+import Weighting.Waiter;
+import Weighting.Weighting;
+
+import com.google.gson.Gson;
 
 public class Schedule {
 
@@ -36,25 +40,23 @@ public class Schedule {
             // command line parsing using jopt-simple
             OptionParser parser = new OptionParser();
             // which solver to use
-            OptionSpec<String> solver = 
-                parser.acceptsAll(Arrays.asList("s", "solver"), 
-                "maxweight (default), lp")
-                .withRequiredArg().ofType(String.class)
-                .describedAs("solution algorithm");
+            OptionSpec<String> solver = parser
+                    .acceptsAll(Arrays.asList("s", "solver"),
+                            "maxweight (default), lp").withRequiredArg()
+                    .ofType(String.class).describedAs("solution algorithm");
             // which weighting to use
-            OptionSpec<String> weighting =
-                parser.acceptsAll(Arrays.asList("w", "weighting"), 
-                "Waiter (default), Butler, Chef")
-                .withRequiredArg().ofType(String.class)
-                .describedAs("name of Weighting"); 
+            OptionSpec<String> weighting = parser
+                    .acceptsAll(Arrays.asList("w", "weighting"),
+                            "Waiter (default), Butler, Chef, Gardener")
+                    .withRequiredArg().ofType(String.class)
+                    .describedAs("name of Weighting");
             // optional file output
-            OptionSpec<File> fileout =
-                parser.acceptsAll(Arrays.asList("o", "output"), "file output")
-                .withRequiredArg()
-                .ofType(File.class);
+            OptionSpec<File> fileout = parser
+                    .acceptsAll(Arrays.asList("o", "output"), "file output")
+                    .withRequiredArg().ofType(File.class);
             // display help
-            parser.acceptsAll(Arrays.asList("h", "help", "?"), 
-                "show this help message").forHelp();
+            parser.acceptsAll(Arrays.asList("h", "help", "?"),
+                    "show this help message").forHelp();
 
             OptionSet options = parser.parse(args);
 
@@ -75,9 +77,8 @@ public class Schedule {
             }
 
             Gson gson = new Gson();
-            BufferedReader br = new BufferedReader(
-                new FileReader(jsonfile));
-            Data dat = gson.fromJson(br,Data.class);
+            BufferedReader br = new BufferedReader(new FileReader(jsonfile));
+            Data dat = gson.fromJson(br, Data.class);
             dat.init();
 
             Weighting w = new Waiter();
@@ -88,11 +89,13 @@ public class Schedule {
                     w = new Butler();
                 } else if (weighting.value(options).equals("Chef")) {
                     w = new Chef();
+                } else if (weighting.value(options).equals("Gardener")) {
+                    w = new Gardener();
                 } else {
                     System.err.println("Invalid weight function");
                     System.exit(1);
                 }
-            } 
+            }
 
             if (options.has("solver")) {
                 if (solver.value(options).equals("maxweight")) {
@@ -113,7 +116,7 @@ public class Schedule {
                 fout.close();
             } else {
                 System.out.println(dat.assignments());
-                System.out.println(Evaluator.evaluate (dat, w));
+                System.out.println(Evaluator.evaluate(dat, w));
             }
 
         } catch (IOException e) {
