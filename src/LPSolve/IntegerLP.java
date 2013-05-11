@@ -53,13 +53,10 @@ public class IntegerLP {
                 solver.addConstraint(getConstraintSlotAtLeastOne(j),
                         LpSolve.GE, 1.0);
             }
-            // for each tutor, cannot assign more than twice, but at least once
+            // for each tutor, assign 'numAssignments' slots
             for (int i = 0; i < t.length; ++i) {
-                solver.addConstraint(getConstraintTutorN(i), LpSolve.LE,
+                solver.addConstraint(getConstraintTutorN(i), LpSolve.EQ,
                         t[i].numAssignments);
-                solver.addConstraint(getConstraintTutorN(i), LpSolve.GE,
-                        t[i].numAssignments); // TODO replace with
-                                              // assignments/per
             }
             // for each tutor, cannot to assign to two slots that share time
             calculateSimultaneousSlots();
