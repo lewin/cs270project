@@ -31,8 +31,9 @@ public class Matcher {
             // compute matching
             for (int i = 0; i < t.length; i++) {
                 for (int j = 0; j < s.length; j++) {
-                    if (!ignore[j]) { // on second iteration, ignore matched
-                                      // slots
+                    if (!ignore[j]
+                            && !(t[i].numAssignments == 1 && t[i].slot != null)) {
+                        // on second iteration, ignore matched slots
                         updateMatching(i, j + t.length, w.weight(t[i], s[j]));
                     }
                 }
@@ -54,6 +55,8 @@ public class Matcher {
                 ignore[k] = true;
             }
         }
+
+        Arrays.fill(ignore, false);
 
         // one more time
         init();
@@ -93,7 +96,9 @@ public class Matcher {
 
         for (int i = 0; i < t.length; i++) {
             for (int j = 0; j < s.length; j++) {
-                if (!ignore[j]) {
+                if (!ignore[j]
+                        && !(t[i].numAssignments == 1 && t[i].slot != null)
+                        && (t[i].slot == null || !t[i].slot.simultaneous(s[j]))) {
                     g.addEdge(i, j + t.length, 0);
                 }
             }

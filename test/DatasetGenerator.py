@@ -8,7 +8,7 @@ NUM_COURSES = NUM_TIMESLOTS # For simplicity
 START_HOUR = 11 # Starts at 11am; this program uses 24-hour system
 
 NUM_OFFICERS = 32
-NUM_COMMIES = 10
+NUM_COMMIES = 5
 COURSES_PER_PERSON = 5 # 5 simulates normal courseload + some other obligation
 
 # office: [0, NUM_OFFICES - 1]
@@ -153,8 +153,8 @@ f.write('"courseNames":' + str(course_names) + ',\n\n')
 f.write('"tutors":[\n')
 people_names = [person_name for person_name in fake_people]
 for person_name in people_names[:-1]:
-    printTutor(person_name, False, people_names[0] == "O", f)
-printTutor(people_names[-1], True, people_names[0] == "O", f)
+    printTutor(person_name, False, person_name[0] == "O", f)
+printTutor(people_names[-1], True, person_name[0] == "O", f)
 f.write('],\n\n')
 
 f.write('"slots":[\n')

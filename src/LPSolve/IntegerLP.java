@@ -56,7 +56,7 @@ public class IntegerLP {
             // for each tutor, cannot assign more than twice, but at least once
             for (int i = 0; i < t.length; ++i) {
                 solver.addConstraint(getConstraintTutorN(i), LpSolve.LE,
-                        MAX_ASSIGNMENTS_PER_TUTOR);
+                        t[i].numAssignments);
                 solver.addConstraint(getConstraintTutorN(i), LpSolve.GE,
                         t[i].numAssignments); // TODO replace with
                                               // assignments/per
