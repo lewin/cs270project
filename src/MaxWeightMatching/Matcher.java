@@ -26,7 +26,6 @@ public class Matcher {
         for (int r = 0; r < 2; r++) {
             init();
             
-            System.out.println (t.length + " " + s.length);
             // compute matching
             for (int i = 0; i < t.length; i++) {
                 for (int j = 0; j < s.length; j++) {
@@ -86,17 +85,10 @@ public class Matcher {
         matched = new boolean [n];
         Arrays.fill (partner, -1);
         
-        // match to dummy variables
         for (int i = 0; i < t.length; i++) {
             for (int j = 0; j < s.length; j++) {
                 if (!ignore [j]) {
                     g.addEdge (i, j + t.length, 0);
-                    if (!matched [i] && !matched [j + t.length]) {
-                        matched [i] = true;
-                        matched [j + t.length] = true;
-                        partner [i] = j + t.length;
-                        partner [j + t.length] = i;
-                    }
                 }
             }
         }
@@ -113,7 +105,7 @@ public class Matcher {
         
         // get a feasible matching
         price [a] += d;
-        // rematch a and b if necessary
+        // rematch a and b if necessary, since price matching is no longer on tight edges
         if (matched [a]) {
             matched [partner [a]] = false;
             partner [partner [a]] = -1;

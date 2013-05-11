@@ -12,6 +12,12 @@ import Items.Slot;
 import Items.Tutor;
 
 public interface Weighting {
+    /**
+     * @param tutor Tutor to be matched, may already be partially assigned
+     * @param slot Slot to be matched, may already have some tutors
+     * @return -1 if Tutor is already assigned to a simultaneous slot
+     *         a nonnegative value otherwise
+     */
     public double weight(Tutor tutor, Slot slot);
 }
 
