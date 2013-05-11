@@ -98,7 +98,8 @@ public class Matcher {
             for (int j = 0; j < s.length; j++) {
                 if (!ignore[j]
                         && !(t[i].numAssignments == 1 && t[i].slot != null)
-                        && (t[i].slot == null || !t[i].slot.simultaneous(s[j]))) {
+                        && (t[i].slot == null || !t[i].slot.simultaneous(s[j])
+                                && (t[i].slot2 == null))) {
                     g.addEdge(i, j + t.length, 0);
                 }
             }

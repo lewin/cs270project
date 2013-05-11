@@ -22,11 +22,11 @@ public class Gardener implements Weighting {
 
         // Adjacencies: +1 if adjacent or no preference
         if (t.adjacentPref == 0) {
-            retval += 1;
+            retval += 10;
         } else if (t.adjacentPref == 1) {
             for (Slot adjslot : s.adjacentSlots) {
                 if (adjslot.tutor == t) {
-                    retval += 1;
+                    retval += 10;
                 }
             }
         }
