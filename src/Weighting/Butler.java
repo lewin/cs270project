@@ -17,7 +17,7 @@ public class Butler implements Weighting {
 
         // add the course preference
         for (int i = 0; i < t.courses.length; ++i) {
-            retval += t.courses[i] * s.courses[i] * courseWeight;
+            retval += (t.courses[i] + 1) * s.courses[i] * courseWeight;
         }
         
         return retval;

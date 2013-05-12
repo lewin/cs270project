@@ -6,6 +6,7 @@ package LPSolve;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.lang.Math;
 
 import lpsolve.LpSolve;
 import lpsolve.LpSolveException;
@@ -24,13 +25,16 @@ public class IntegerLP {
     private static ArrayList<String> uniqueTimes;
     private static HashMap<String, ArrayList<Integer>> times;
 
-    private static final double MAX_ASSIGNMENTS_PER_TUTOR = 2.0;
-
     public static void match(Tutor[] tutors, Slot[] slots, Weighting waiter) {
         t = tutors;
         s = slots;
         w = waiter;
         n = t.length * s.length;
+
+        double nAs = 0.0;
+        for (int i = 0; i < t.length; ++i) {
+            nAs += t[i].numAssignments;
+        }
 
         try {
             // create the LP solver: 0 constraints (for now),
@@ -48,10 +52,14 @@ public class IntegerLP {
             solver.setMaxim(); // sets the obj function to maximize
 
             // CONSTRAINTS
-            // for each slot, assign exactly one (TODO modify for at least one)
+            // for each slot, assign at least one tutor
+            // over all slots, assign an "even" amount of tutors
             for (int j = 0; j < s.length; ++j) {
                 solver.addConstraint(getConstraintSlotAtLeastOne(j),
                         LpSolve.GE, 1.0);
+                solver.addConstraint(getConstraintSlotAtLeastOne(j),
+                        LpSolve.LE, 
+                        Math.ceil(nAs/s.length));
             }
             // for each tutor, assign 'numAssignments' slots
             for (int i = 0; i < t.length; ++i) {
@@ -71,7 +79,8 @@ public class IntegerLP {
             // ilp solution
             solver.solve();
             // System.out.println("the linear program");
-            // solver.printLp();
+            //solver.printLp();
+            //solver.printSolution(1);
 
             // use solution to set the assignments of each tutor
             setMatching(solver.getPtrVariables());

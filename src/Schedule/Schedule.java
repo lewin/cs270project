@@ -81,7 +81,7 @@ public class Schedule {
             Data dat = gson.fromJson(br, Data.class);
             dat.init();
 
-            Weighting w = new Waiter();
+            Weighting w = new Gardener();
             if (options.has("weighting")) {
                 if (weighting.value(options).equals("Waiter")) {
                     w = new Waiter();
