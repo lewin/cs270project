@@ -1,3 +1,8 @@
+# Creates a fake set of classes and a fake set of officers, committee members.
+# Gives each fake student a random subset of classes.
+# Students are free during all other times, and have randomly generated 
+# preferences for timeslots, offices, and adjacent slots.
+
 from random import choice, randint
 
 NUM_OFFICES = 2

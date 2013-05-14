@@ -1,0 +1,149 @@
+% THIS IS AN EXAMPLE DOCUMENT FOR VLDB 2010
+% based on ACM SIGPROC-SP.TEX VERSION 2.7
+% Modified by  Gerald Weber <gerald@cs.auckland.ac.nz>
+
+
+% This example *does* use the .bib file (from which the .bbl file
+% is produced). REMEMBER HOWEVER: After having produced the .bbl file,
+% and prior to final submission, you need to 'insert'  your .bbl file into
+% your source .tex file so as to provide ONE 'self-contained' source file.
+
+\documentclass{vldb}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\begin{document}
+
+% ****************** TITLE ****************************************
+
+\title{Improvements on a Time Slot Allocation Algorithm
+%Format\titlenote{for use with vldb.cls}
+}
+% \subtitle{[Extended Abstract]
+%\titlenote{A full version of this paper is available as\textit{Author's Guide to Preparing ACM SIG Proceedings Using \LaTeX$2_\epsilon$\ and BibTeX} at \texttt{www.acm.org/eaddress.htm}}}
+
+% ****************** AUTHORS **************************************
+
+% You need the command \numberofauthors to handle the 'placement
+% and alignment' of the authors beneath the title.
+%
+% For aesthetic reasons, we recommend 'three authors at a time'
+% i.e. three 'name/affiliation blocks' be placed beneath the title.
+%
+% NOTE: You are NOT restricted in how many 'rows' of
+% "name/affiliations" may appear. We just ask that you restrict
+% the number of 'columns' to three.
+%
+% Because of the available 'opening page real-estate'
+% we ask you to refrain from putting more than six authors
+% (two rows with three columns) beneath the article title.
+% More than six makes the first-page appear very cluttered indeed.
+%
+% Use the \alignauthor commands to handle the names
+% and affiliations for an 'aesthetic maximum' of six authors.
+% Add names, affiliations, addresses for
+% the seventh etc. author(s) as the argument for the
+% \additionalauthors command.
+% These 'additional authors' will be output/set for you
+% without further effort on your part as the last section in
+% the body of your article BEFORE References or any Appendices.
+
+\numberofauthors{3} %  in this sample file, there are a *total*
+% of EIGHT authors. SIX appear on the 'first-page' (for formatting
+% reasons) and the remaining two appear in the \additionalauthors section.
+
+\author{
+% You can go ahead and credit any number of authors here,
+% e.g. one 'row of three' or two rows (consisting of one row of three
+% and a second row of one, two or three).
+%
+% The command \alignauthor (no curly braces needed) should
+% precede each author name, affiliation/snail-mail address and
+% e-mail address. Additionally, tag each line of
+% affiliation/address with \affaddr, and tag the
+% e-mail address with \email.
+%
+% 1st. author
+\alignauthor
+Lewin Gan
+\alignauthor
+Allen Xiao
+\alignauthor
+Edwin Liao
+}
+% There's nothing stopping you putting the seventh, eighth, etc.
+% author on the opening page (as the 'third row') but we ask,
+% for aesthetic reasons that you place these 'additional authors'
+% in the \additional authors block, viz.
+
+% Just remember to make sure that the TOTAL number of authors
+% is the number that will appear on the first page PLUS the
+% number that will appear in the \additionalauthors section.
+
+
+\maketitle
+
+
+\section{Motivation}
+At the beginning of every semester, HKN has the task of scheduling its officers to tutoring time/location slots based on each person's slot preferences. This is similar to the General Assignment Problem in that each slot (task) must be assigned one or more tutors (agents). Unlike the General Assignment Problem (for which each agent is assigned up to its task capacity), we are enforcing that each officer is assigned to exactly 2 slots.
+
+The previous scheduling algorithm used linear programming to find some feasible fractional solution, then improved on it with an inefficient hill-climbing algorithm that consisted of trying 3-swaps between all 3-tuples of tutor-slot assignments. This algorithm's documentation claimed that it could take up to 10 hours, and suggested that it be run overnight.
+
+\section{Features}
+To sign up as a tutor, each tutor fills out a web page listing the following:
+\begin{itemize}
+\item Time slot availabilities and preference levels
+\item Preferred office (Soda or Cory) for each time slot
+\item Courses they are comfortable tutoring
+\item Whether adjacent tutoring slots are preferred
+\end{itemize}
+This last preference prevents our problem from being modeled as a linear program, unless we have constraints that are exponential in number relative to the number of slots.
+
+We also have committee members: non-officer tutors who are assigned 1 slot instead of 2.
+
+\section{The Algorithm}
+We assume that there are enough tutor assignments such that each slot will be assigned at least one tutor. While there exist unfilled tutoring slots, we use maximum weight matching to match each tutor to one slot, then remove all assigned slots. Once all slots have been filled, we bring back all slots and repeat this process until each tutor had their tutoring capacity satisfied.
+
+During each iteration of this algorithm, each tutor is only assigned one slot. Furthermore, we can change edge weights between iterations. This allows us to take into consideration each tutor's adjacent slot preference, as well as prevent tutors from being assigned to concurrent time slots. 
+
+Our algorithm greedily applies maximum weight matching for each iteration. Let's say our algorithm finds some matching with value $X$ in its first iteration. All subsequent iterations will find a matching with value $\le X$. In the worst case scenario, the first iteration will find a matching with some value $X$ and all other iterations will find matchings with value 0. Thus, we have a $k$-approximate algorithm. In our case, each officer tutors for 2 hours, so $k=2$.
+
+\section{Experimental Results}
+We were unable to obtain past semesters' tutor preferences, so we wrote a dataset generator that randomly generates a set of fake tutors with fake preferences. We compared our maximum weight matching program's output values to that of an integer linear programming library we found online.\footnote{\href{http://sourceforge.net/projects/lpsolve/files/lpsolve/5.5.2.0/}{Code} \href{http://lpsolve.sourceforge.net/5.5/Java/README.html}{Readme}} We believe that the ILP library code finds an optimal to our problem (minus the adjacency slot preferences, since the adjacency preference is difficult to encode in a linear program).
+
+We used the following weight function for our experiments:
+\begin{itemize}
+\item Assign a weight of -1 to any tutor-slot pairings that would make a tutor be assigned to two simultaneous time slots.
+\item Add 10 to the weight of a pairing where the tutor either has no adjacency preference, or the tutor prefers adjacent slots and is assigned adjacent slots.
+\item Add 10 to the weight of a pairing where the tutor is available during this time slot; add 20 instead if the tutor prefers this time slot.
+\item Add $x \in [1, 5]$ to the weight of a pairing depending on how much the tutor prefers to tutor in the office of this time slot.
+\end{itemize}
+
+Using Spring 2013's tutoring preferences, we found that our maximum weight matching program performed almost exactly as well as the ILP library (total value of 732 vs. 733). On randomly generated datasets \footnote{See test/exp\_results.txt and test/DatasetGenerator.py for more information on how datasets were randomly generated}, the maximum weight matching program usually does 5-10\% better than the ILP library. The most notable exception to this was on the dataset that had exactly 30 officers (2 slots per officer) and 60 time/location slots. Since there was exactly 1 tutor assigned to each tutoring slot, the maximum weight matching program's greedy nature caused it to pick a matching that was relatively worse than usual (over 5\% worse than the ILP library's solution).
+
+\section{Future Plans}
+There are a few potential bugs with the maximum weight matching program that require further investigation:
+\begin{itemize}
+\item On some runs, the maximum weight matching program will assign a tutor to a time slot that he/she cannot make, whereas the linear programming library will assign all tutors to slots for which they are available. This is either caused by a bug in our algorithm, or we need to fine tune our weight function.
+\item When run on the Spring 2013 dataset, the maximum weight matching program's solution seems to consider adjacent slot preferences just as much as the ILP library; that is, not at all. Either our code has a bug, or (more likely) the Spring 2013 dataset's tutors were too restrictive in listing their available times.\footnote{Many tutors listed only 3-5 available time slots. One particular officer listed only 1 available time slot, even though we had to assign him to 2 tutoring slots. We took this officer out.}
+\end{itemize}
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,26 @@
+>> Dataset descriptions
+
+(Officers = 2 slot assignments; committee members = 1 slot assignment)
+
+s1 - s3: Randomly generated datasets (32 officers, 10 commies)
+s4 - s5: Randomly generated datasets (31 officers, 16 commies)
+s6: Randomly generated dataset (30 officers, 0 commies)
+s7: Randomly generated dataset (32 officers, 5 commies)
+t0: Minimal dataset (for testing/template purposes)
+t1: Data scraped from website (needs cleaning)
+t2: t1 modified to accurately represent Spring 2013
+
+
+>> Data with Gardener weight function (closest to website's weight function)
+
+off_by = 1 - (ilp_score / mwm_score)
+
+dataset: ilp_score mwm_score off_by
+s1: 454 503 10.8%
+s2: 550 582 5.8%
+s3: 518 542 4.6%
+s4: 484 534 10.3%
+s5: 500 541 8.2%
+s6: 456 432 -5.3%
+s7: 482 516 7.1%
+t2: 733 732 -0.1%

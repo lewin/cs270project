@@ -1,6 +1,7 @@
 /**
  * A weight function. Keeps the grass trimmed and the hedges tidy.
- * Implements the weight function described on the HKN website.
+ * Implements the weight function described on the HKN website
+ * except with higher weight given to the adjacency preference.
  */
 
 package Weighting;
@@ -20,7 +21,7 @@ public class Gardener implements Weighting {
             }
         }
 
-        // Adjacencies: +1 if adjacent or no preference
+        // Adjacencies: +10 if adjacent or no preference
         if (t.adjacentPref == 0) {
             retval += 10;
         } else if (t.adjacentPref == 1) {
@@ -41,6 +42,6 @@ public class Gardener implements Weighting {
     }
 
     // 0: unavailable, 1: ambivalent, 2: prefer
-    private static double[] timePrefToW = { 1, 10, 20 };
+    private static double[] timePrefToW = { -1, 10, 20 };
 
 }
