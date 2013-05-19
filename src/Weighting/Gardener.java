@@ -15,18 +15,17 @@ public class Gardener implements Weighting {
         double retval = 0.00;
 
         // Return -1 if tutor is already in that timeslot
-        if (t.slot != null) {
-            if (t.slot.simultaneous(s)) {
+        for (Slot s1 : t.slots)
+            if (s1.simultaneous(s)) {
                 return -1;
             }
-        }
 
         // Adjacencies: +10 if adjacent or no preference
         if (t.adjacentPref == 0) {
             retval += 10;
         } else if (t.adjacentPref == 1) {
             for (Slot adjslot : s.adjacentSlots) {
-                if (adjslot.tutor == t) {
+                if (adjslot.tutors.contains(t)) {
                     retval += 10;
                 }
             }

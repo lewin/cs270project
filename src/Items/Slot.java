@@ -4,7 +4,13 @@
 
 package Items;
 
+import java.util.ArrayList;
+
 public class Slot {
+    public Slot() {
+        tutors = new ArrayList <Tutor> ();
+    }
+    
     // identifying information
     public int sid;
     public String name;
@@ -18,11 +24,12 @@ public class Slot {
     public Slot[] adjacentSlots;
     public Slot[] simultaneousSlots;
 
-    // the tutor currently matched to this slot 
-    public Tutor tutor = null;
-    // if there is another tutor for this slot
-    public Tutor tutor2 = null;
+    public ArrayList <Tutor> tutors;
 
+    public void assign (Tutor t) {
+        tutors.add (t);
+    }
+    
     public boolean simultaneous(Slot s) {
         return day.equals(s.day) && (hour == s.hour);
     }

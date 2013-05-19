@@ -4,7 +4,13 @@
 
 package Items;
 
+import java.util.ArrayList;
+
 public class Tutor {
+    public Tutor () {
+        slots = new ArrayList <Slot> ();
+    }
+    
     // identifying information
     public int tid;
     public String name;
@@ -19,10 +25,12 @@ public class Tutor {
     public boolean officer;
 
     // the slot currently matched to this tutor
-    public Slot slot = null;
-    // Second slot for this tutor.
-    public Slot slot2 = null;
-
+    public ArrayList <Slot> slots;
+    
+    public void assign (Slot s) {
+        slots.add (s);
+    }
+    
     @Override
     public String toString() {
         return tid + "@" + name;

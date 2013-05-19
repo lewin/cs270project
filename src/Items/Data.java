@@ -54,13 +54,9 @@ public class Data {
         String ret = "";
         for (Slot s : slots) {
             ret += String.valueOf(s.sid) + " ";
-            if (s.tutor != null) {
-                ret += String.valueOf(s.tutor.tid);
-
-            }
-            if (s.tutor2 != null) {
-                ret += " " + String.valueOf(s.tutor2.tid);
-            }
+            ret += String.valueOf (s.tutors.get(0).tid);
+            for (int i = 1; i < s.tutors.size(); i++)
+                ret += " " + String.valueOf (s.tutors.get(i).tid);
             ret += "\n";
         }
         return ret.trim();

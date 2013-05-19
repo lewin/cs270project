@@ -15,33 +15,27 @@ public class Evaluator {
 
     public static double evaluate(Data assign, Weighting w) {
         double score = 0;
-        for (Tutor t : assign.tutors) {
-            Slot s1 = t.slot, s2 = t.slot2;
-            if (s1 == null || (t.numAssignments == 2 && s2 == null)) {
+        outer : for (Tutor t : assign.tutors) {
+            if (t.numAssignments != t.slots.size()) {
                 // tutor should have been assigned a slot
-                score -= PENALTY;
-                continue;
-            }
-
-            if (s2 != null && t.numAssignments == 1) {
+                // or tutor was assigned an extra slot
                 score -= PENALTY;
                 continue;
             }
 
             // simplest scoring scheme
-            if (s2 == null) {
-                score += w.weight(t, s1);
-                continue;
-            }
 
-            if (s1.simultaneous(s2)) {
-                // tutor shouldn't have been assigned two concurrent slots
-                score -= PENALTY;
-                continue;
-            }
+            for (int i = 0; i < t.slots.size(); i++)
+                for (int j = i + 1; j < t.slots.size(); j++)
+                    if (t.slots.get(i).simultaneous(t.slots.get(j))) {
+                        score -= PENALTY;
+                        continue outer;
+                    }
 
-            double d1 = w.weight(t, s1), d2 = w.weight(t, s2);
-            score += d1 + d2;
+            double d = 0;
+            for (Slot s : t.slots)
+                d += w.weight (t, s);
+            score += d;
         }
         return score;
     }

@@ -157,16 +157,8 @@ public class IntegerLP {
             for (int j = 0; j < s.length; ++j) {
                 k = results[(s.length * i) + j];
                 if (k > 0) {
-                    if (t[i].slot == null) {
-                        t[i].slot = s[j];
-                    } else {
-                        t[i].slot2 = s[j];
-                    }
-                    if (s[j].tutor == null) {
-                        s[j].tutor = t[i];
-                    } else {
-                        s[j].tutor2 = t[i];
-                    }
+                    t[i].assign (s[j]);
+                    s[j].assign (t[i]);
                 }
             }
         }

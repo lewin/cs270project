@@ -32,7 +32,7 @@ public class Matcher {
             for (int i = 0; i < t.length; i++) {
                 for (int j = 0; j < s.length; j++) {
                     if (!ignore[j]
-                            && !(t[i].numAssignments == 1 && t[i].slot != null)) {
+                            && t[i].numAssignments > t[i].slots.size()) {
                         // on second iteration, ignore matched slots
                         updateMatching(i, j + t.length, w.weight(t[i], s[j]));
                     }
@@ -44,26 +44,17 @@ public class Matcher {
                 if (partner[i] == -1)
                     continue;
                 int k = partner[i] - t.length;
-                if (k >= s.length)
-                    continue;
-                if (t[i].slot == null)
-                    t[i].slot = s[k];
-                else
-                    t[i].slot2 = s[k];
-
-                s[k].tutor = t[i];
+                t[i].assign (s[k]);
+                s[k].assign (t[i]);
                 ignore[k] = true;
             }
         }
-
-        Arrays.fill(ignore, false);
 
         // one more time
         init();
         // now check if any tutors still need slots
         for (int i = 0; i < t.length; i++) {
-            if (t[i].slot == null
-                    || (t[i].numAssignments == 2 && t[i].slot2 == null))
+            if (t[i].slots.size() < t[i].numAssignments)
                 for (int j = 0; j < s.length; j++) {
                     updateMatching(i, j + t.length, w.weight(t[i], s[j]));
                 }
@@ -73,16 +64,8 @@ public class Matcher {
             if (partner[i] == -1)
                 continue;
             int k = partner[i] - t.length;
-
-            if (t[i].slot == null)
-                t[i].slot = s[k];
-            else
-                t[i].slot2 = s[k];
-
-            if (s[k].tutor == null)
-                s[k].tutor = t[i];
-            else
-                s[k].tutor2 = t[i];
+            t[i].assign (s[k]);
+            s[k].assign (t[i]);
         }
     }
 
@@ -93,17 +76,6 @@ public class Matcher {
         partner = new int[n];
         matched = new boolean[n];
         Arrays.fill(partner, -1);
-
-        for (int i = 0; i < t.length; i++) {
-            for (int j = 0; j < s.length; j++) {
-                if (!ignore[j]
-                        && !(t[i].numAssignments == 1 && t[i].slot != null)
-                        && (t[i].slot == null || !t[i].slot.simultaneous(s[j])
-                                && (t[i].slot2 == null))) {
-                    g.addEdge(i, j + t.length, 0);
-                }
-            }
-        }
     }
 
     private static int[] prev, ovis, partner;
