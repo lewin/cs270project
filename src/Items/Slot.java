@@ -46,7 +46,7 @@ public class Slot {
         if (!(other instanceof Slot)) return false;
         return sid == ((Slot)other).sid 
             && name.equals (((Slot)other).name) 
-            && day.equals (((Slot)other).name) 
+            && day.equals (((Slot)other).day) 
             && hour == ((Slot)other).hour 
             && office.equals (((Slot)other).office);
     }
