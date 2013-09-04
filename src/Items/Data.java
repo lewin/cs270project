@@ -54,9 +54,21 @@ public class Data {
         String ret = "";
         for (Slot s : slots) {
             ret += String.valueOf(s.sid) + " ";
-            ret += String.valueOf (s.tutors.get(0).tid);
+            ret += String.valueOf(s.tutors.get(0).tid);
             for (int i = 1; i < s.tutors.size(); i++)
-                ret += " " + String.valueOf (s.tutors.get(i).tid);
+                ret += " " + String.valueOf(s.tutors.get(i).tid);
+            ret += "\n";
+        }
+        return ret.trim();
+    }
+
+    public String formattedAssignments() {
+        String ret = "";
+        for (Slot s : slots) {
+            ret += s.details() + " ";
+            ret += s.tutors.get(0).name;
+            for (int i = 1; i < s.tutors.size(); i++)
+                ret += " " + String.valueOf(s.tutors.get(i).name);
             ret += "\n";
         }
         return ret.trim();

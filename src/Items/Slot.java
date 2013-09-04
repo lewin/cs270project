@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 public class Slot {
     public Slot() {
-        tutors = new ArrayList <Tutor> ();
+        tutors = new ArrayList<Tutor>();
     }
-    
+
     // identifying information
     public int sid;
     public String name;
@@ -24,35 +24,39 @@ public class Slot {
     public Slot[] adjacentSlots;
     public Slot[] simultaneousSlots;
 
-    public ArrayList <Tutor> tutors;
+    public ArrayList<Tutor> tutors;
 
-    public void assign (Tutor t) {
-        tutors.add (t);
+    public void assign(Tutor t) {
+        tutors.add(t);
     }
-    
+
     public boolean simultaneous(Slot s) {
-        return (hour == s.hour) && str_equals (day, s.day);
+        return (hour == s.hour) && str_equals(day, s.day);
     }
-    
-    public boolean adjacent (Slot s) {
+
+    public boolean adjacent(Slot s) {
         for (int i = 0; i < adjacentSlots.length; i++)
-            if (adjacentSlots [i].equals(s))
+            if (adjacentSlots[i].equals(s))
                 return true;
         return false;
     }
-    
+
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof Slot)) return false;
-        return sid == ((Slot)other).sid 
-            && hour == ((Slot)other).hour
-            && str_equals (name, ((Slot)other).name)
-            && str_equals (day, ((Slot)other).day)
-            && str_equals (office, ((Slot)other).office);
+        if (!(other instanceof Slot))
+            return false;
+        return sid == ((Slot) other).sid && hour == ((Slot) other).hour
+                && str_equals(name, ((Slot) other).name)
+                && str_equals(day, ((Slot) other).day)
+                && str_equals(office, ((Slot) other).office);
     }
-    
-    private static boolean str_equals (String a, String b) {
+
+    private static boolean str_equals(String a, String b) {
         return a == null ? b == null : a.equals(b);
+    }
+
+    public String details() {
+        return office + " " + day + " " + hour;
     }
 
     @Override

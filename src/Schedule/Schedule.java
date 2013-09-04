@@ -115,7 +115,7 @@ public class Schedule {
                 fout.println(dat.assignments());
                 fout.close();
             } else {
-                System.out.println(dat.assignments());
+                System.out.println(dat.formattedAssignments());
                 System.out.println(Evaluator.evaluate(dat, w));
             }
 
