@@ -23,8 +23,6 @@ public class Evaluator {
                 continue;
             }
 
-            // simplest scoring scheme
-
             for (int i = 0; i < t.slots.size(); i++)
                 for (int j = i + 1; j < t.slots.size(); j++)
                     if (t.slots.get(i).simultaneous(t.slots.get(j))) {

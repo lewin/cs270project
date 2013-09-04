@@ -13,7 +13,7 @@ public class Matcher {
     private static Graph g;
     private static Weighting w;
     private static int n, sz;
-    private static boolean[] ignore;
+    private static boolean [] used;
 
     public static void match(Tutor[] tutors, Slot[] slots, Weighting waiter) {
         t = tutors;
@@ -23,61 +23,52 @@ public class Matcher {
         n = t.length + s.length;
         sz = t.length;
 
-        // run twice, but only assign one slot one tutor
-        ignore = new boolean[s.length];
-        for (int r = 0; r < 2; r++) {
-            init();
-
-            // compute matching
-            for (int i = 0; i < t.length; i++) {
-                for (int j = 0; j < s.length; j++) {
-                    if (!ignore[j]
-                            && t[i].numAssignments > t[i].slots.size()) {
-                        // on second iteration, ignore matched slots
-                        updateMatching(i, j + t.length, w.weight(t[i], s[j]));
-                    }
-                }
-            }
-
-            // assign partners
-            for (int i = 0; i < t.length; i++) {
-                if (partner[i] == -1)
-                    continue;
-                int k = partner[i] - t.length;
-                t[i].assign (s[k]);
-                s[k].assign (t[i]);
-                ignore[k] = true;
-            }
+        // Try to assign all slots one tutor
+        // this may allow one tutor to go into multiple slots
+        used = new boolean [s.length];
+        for (int r = 0; r < Math.ceil((double)s.length / t.length); r++) {
+            assign();
         }
-
-        // one more time
-        init();
-        // now check if any tutors still need slots
-        for (int i = 0; i < t.length; i++) {
-            if (t[i].slots.size() < t[i].numAssignments)
-                for (int j = 0; j < s.length; j++) {
-                    updateMatching(i, j + t.length, w.weight(t[i], s[j]));
-                }
-        }
-
-        for (int i = 0; i < t.length; i++) {
-            if (partner[i] == -1)
-                continue;
-            int k = partner[i] - t.length;
-            t[i].assign (s[k]);
-            s[k].assign (t[i]);
-        }
+        // one more time to make sure all tutors have enough slots
+        // this will allow some slots to have more than one person
+        // however now all slots can be used
+        used = new boolean [s.length];
+        assign();
     }
-
-    private static void init() {
+    
+    private static void assign() {
         // initialize graph
         g = new Graph(n);
         price = new double[n];
         partner = new int[n];
         matched = new boolean[n];
         Arrays.fill(partner, -1);
-    }
 
+        // compute matching
+        for (int i = 0; i < t.length; i++) {
+            // if this tutor can still be assigned slots
+            if (t[i].numAssignments > t[i].slots.size()) {
+                for (int j = 0; j < s.length; j++) {
+                    // ignore used slots and any slots a tutor can not make
+                    if (!used[j] && !t[i].conflict(s[j]))
+                        updateMatching(i, j + t.length, w.weight(t[i], s[j]));
+                    // note that this case naturally doesn't let us assign 2
+                    // of the same slot to one tutor.
+                }
+            }
+        }
+        
+        // assign partners
+        for (int i = 0; i < t.length; i++) {
+            if (partner[i] == -1)
+                continue;
+            int k = partner[i] - t.length;
+            t[i].assign (s[k]);
+            s[k].assign (t[i]);
+            used [k] = true;
+        }
+    }
+    
     private static int[] prev, ovis, partner;
     private static double[] delta, price;
     private static boolean[] vis, matched;
@@ -125,7 +116,8 @@ public class Matcher {
 
     /**
      * finds an augmenting path and returns the end node we can follow prev
-     * pointers to recreate path Running time is O(M log M), M is number of
+     * pointers to recreate path 
+     * Running time is O(M log M), M is number of
      * edges (which is usually about N^2)
      */
     private static int idx;
@@ -175,7 +167,8 @@ public class Matcher {
     }
 
     /**
-     * Keeps prices up to date Running time: O(N), N is number of nodes
+     * Keeps prices up to date 
+     * Running time: O(N), N is number of nodes
      */
     private static void updatePrices() {
         int k = 0;
@@ -191,7 +184,8 @@ public class Matcher {
     }
 
     /**
-     * Switches path parities Running time: O(N), N is number of nodes
+     * Switches path parities 
+     * Running time: O(N), N is number of nodes
      * 
      * @param end
      *            : the end of the path

@@ -27,6 +27,13 @@ public class Tutor {
     // the slot currently matched to this tutor
     public ArrayList <Slot> slots;
     
+    public boolean conflict (Slot s) {
+        for (Slot r : slots)
+            if (s.simultaneous(r))
+                return true;
+        return false;
+    }
+    
     public void assign (Slot s) {
         slots.add (s);
     }
