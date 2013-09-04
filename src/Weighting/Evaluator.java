@@ -4,6 +4,8 @@
 
 package Weighting;
 
+import java.util.ArrayList;
+
 import Items.Data;
 import Items.Slot;
 import Items.Tutor;
@@ -31,8 +33,14 @@ public class Evaluator {
                     }
 
             double d = 0;
-            for (Slot s : t.slots)
+            ArrayList <Slot> temp = new ArrayList <Slot> (t.slots);
+            t.slots.clear();
+            // simulate re-adding the slots in one by one. 
+            // order shouldn't matter when adding slots in 
+            for (Slot s : temp) {
                 d += w.weight (t, s);
+                t.assign(s);
+            }
             score += d;
         }
         return score;
