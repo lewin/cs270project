@@ -31,7 +31,7 @@ public class Slot {
     }
     
     public boolean simultaneous(Slot s) {
-        return day.equals(s.day) && (hour == s.hour);
+        return (hour == s.hour) && str_equals (day, s.day);
     }
     
     public boolean adjacent (Slot s) {
@@ -45,10 +45,14 @@ public class Slot {
     public boolean equals(Object other) {
         if (!(other instanceof Slot)) return false;
         return sid == ((Slot)other).sid 
-            && name.equals (((Slot)other).name) 
-            && day.equals (((Slot)other).day) 
-            && hour == ((Slot)other).hour 
-            && office.equals (((Slot)other).office);
+            && hour == ((Slot)other).hour
+            && str_equals (name, ((Slot)other).name)
+            && str_equals (day, ((Slot)other).day)
+            && str_equals (office, ((Slot)other).office);
+    }
+    
+    private static boolean str_equals (String a, String b) {
+        return a == null ? b == null : a.equals(b);
     }
 
     @Override
