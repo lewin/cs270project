@@ -14,6 +14,7 @@ public class Matcher {
     private static Weighting w;
     private static int n, sz;
     private static boolean [] used;
+    private static boolean [] ignore;
 
     public static void match(Tutor[] tutors, Slot[] slots, Weighting waiter) {
         t = tutors;
@@ -23,6 +24,12 @@ public class Matcher {
         n = t.length + s.length;
         sz = t.length;
 
+        // ignore all committee members for now
+        ignore = new boolean [t.length];
+        for (int i = 0; i < t.length; i++)
+            if (t[i].numAssignments == 1)
+                ignore [i] = true;
+        
         // Try to assign all slots one tutor
         // this may allow one tutor to go into multiple slots
         used = new boolean [s.length];
@@ -33,6 +40,9 @@ public class Matcher {
         // this will allow some slots to have more than one person
         // however now all slots can be used
         used = new boolean [s.length];
+        assign();
+        // now allow committee members to be assigned
+        ignore = new boolean [t.length];
         assign();
     }
     
@@ -53,13 +63,24 @@ public class Matcher {
             perm [j] ^= perm [i];
             perm [i] ^= perm [j];
         }
-
-        // compute matching
+        
+        int [] perm2 = new int [s.length];
+        for (int i = 0; i < perm2.length; i++) {
+            perm2 [i] = i;
+            int j = (int)(Math.random() * (i + 1));
+            if (j == i) continue;
+            perm2 [i] ^= perm2 [j];
+            perm2 [j] ^= perm2 [i];
+            perm2 [i] ^= perm2 [j];
+        }
+        
         for (int b = 0; b < t.length; b++) {
             int i = perm[b];
+            if (ignore [i]) continue;
             // if this tutor can still be assigned slots
             if (t[i].numAssignments > t[i].slots.size()) {
-                for (int j = 0; j < s.length; j++) {
+                for (int k = 0; k < s.length; k++) {
+                    int j = perm2[k];
                     // ignore used slots and any slots a tutor can not make
                     double r = w.weight(t[i], s[j]);
                     if (!used[j] && !t[i].conflict(s[j]) && r > 0)
