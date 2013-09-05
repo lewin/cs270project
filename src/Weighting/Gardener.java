@@ -16,7 +16,7 @@ public class Gardener implements Weighting {
 
         // Adjacencies: +10 if adjacent or no preference
         if (t.adjacentPref == 0) {
-            retval += 10;
+            retval += 5;
         } else if (t.adjacentPref == 1) {
             for (Slot adjslot : s.adjacentSlots) {
                 if (adjslot.tutors.contains(t)) {
@@ -28,13 +28,13 @@ public class Gardener implements Weighting {
         // Time slots: +1 if not preferred, +10 if ambivalent, +20 if preferred
         retval += timePrefToW[t.timeSlots[s.sid]];
 
-        // Office preferences: +[1, 5] depending on office preference
-        retval += (t.officePrefs[s.sid] + 3);
+//        // Office preferences: +[1, 5] depending on office preference
+//        retval += (t.officePrefs[s.sid] + 3);
 
         return retval;
     }
 
     // 0: unavailable, 1: ambivalent, 2: prefer
-    private static double[] timePrefToW = { -1, 10, 20 };
+    private static double[] timePrefToW = { -1000, 20, 40 };
 
 }

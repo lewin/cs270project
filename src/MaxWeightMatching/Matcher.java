@@ -26,7 +26,7 @@ public class Matcher {
         // Try to assign all slots one tutor
         // this may allow one tutor to go into multiple slots
         used = new boolean [s.length];
-        for (int r = 0; r < Math.ceil((double)s.length / t.length); r++) {
+        for (int r = 0; r < 2; r++) {
             assign();
         }
         // one more time to make sure all tutors have enough slots
@@ -43,15 +43,27 @@ public class Matcher {
         partner = new int[n];
         matched = new boolean[n];
         Arrays.fill(partner, -1);
+        
+        int [] perm = new int [t.length];
+        for (int i = 0; i < perm.length; i++) {
+            perm [i] = i;
+            int j = (int)(Math.random() * (i + 1));
+            if (j == i) continue;
+            perm [i] ^= perm [j];
+            perm [j] ^= perm [i];
+            perm [i] ^= perm [j];
+        }
 
         // compute matching
-        for (int i = 0; i < t.length; i++) {
+        for (int b = 0; b < t.length; b++) {
+            int i = perm[b];
             // if this tutor can still be assigned slots
             if (t[i].numAssignments > t[i].slots.size()) {
                 for (int j = 0; j < s.length; j++) {
                     // ignore used slots and any slots a tutor can not make
-                    if (!used[j] && !t[i].conflict(s[j]))
-                        updateMatching(i, j + t.length, w.weight(t[i], s[j]));
+                    double r = w.weight(t[i], s[j]);
+                    if (!used[j] && !t[i].conflict(s[j]) && r > 0)
+                        updateMatching(i, j + t.length, r);
                     // note that this case naturally doesn't let us assign 2
                     // of the same slot to one tutor.
                 }
@@ -73,28 +85,28 @@ public class Matcher {
     private static double[] delta, price;
     private static boolean[] vis, matched;
 
-    private static void updateMatching(int a, int b, double c) {
-        g.addEdge(a, b, c);
-        double d = c - price[a] - price[b];
+    private static void updateMatching(int from, int to, double weight) {
+        g.addEdge(from, to, weight);
+        double d = weight - price[from] - price[to];
         if (d <= 0)
             return; // no need to further process this case
 
         // get a feasible matching
-        price[a] += d;
+        price[from] += d;
         // rematch a and b if necessary, since price matching is no longer on
         // tight edges
-        if (matched[a]) {
-            matched[partner[a]] = false;
-            partner[partner[a]] = -1;
+        if (matched[from]) {
+            matched[partner[from]] = false;
+            partner[partner[from]] = -1;
         }
-        if (matched[b]) {
-            matched[partner[b]] = false;
-            partner[partner[b]] = -1;
+        if (matched[to]) {
+            matched[partner[to]] = false;
+            partner[partner[to]] = -1;
         }
-        matched[a] = true;
-        matched[b] = true;
-        partner[a] = b;
-        partner[b] = a;
+        matched[from] = true;
+        matched[to] = true;
+        partner[from] = to;
+        partner[to] = from;
 
         prev = new int[n];
         Arrays.fill(prev, -1);

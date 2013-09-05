@@ -81,7 +81,7 @@ public class Schedule {
             Data dat = gson.fromJson(br, Data.class);
             dat.init();
 
-            Weighting w = new Gardener();
+            Weighting w = new Butler();
             if (options.has("weighting")) {
                 if (weighting.value(options).equals("Waiter")) {
                     w = new Waiter();
@@ -109,7 +109,15 @@ public class Schedule {
             } else {
                 Matcher.match(dat.tutors, dat.slots, w);
             }
-
+//            String [] officers = new String [dat.tutors.length];
+//            for (int i = 0; i < dat.tutors.length; i++) {
+//                officers [i] = dat.tutors[i].name;
+//            }
+//            Arrays.sort(officers);
+//            for (int i = 0; i < dat.tutors.length; i++)
+//                System.out.println (officers[i]);
+                
+            
             if (options.has("output")) {
                 PrintWriter fout = new PrintWriter(fileout.value(options));
                 fout.println(dat.assignments());
@@ -119,6 +127,13 @@ public class Schedule {
                 System.out.println(Evaluator.evaluate(dat, w));
             }
 
+//            for (int i = 0; i < dat.slots.length; i++) {
+//                System.out.print (dat.slots[i].details());
+//                for (int j = 0; j < dat.slots[i].adjacentSlots.length; j++)
+//                    System.out.print (" " + dat.slots[i].adjacentSlots[j].details());
+//                System.out.println();
+//            }
+            
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {

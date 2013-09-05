@@ -51,7 +51,7 @@ public class Slot {
                 && str_equals(office, ((Slot) other).office);
     }
 
-    private static boolean str_equals(String a, String b) {
+    public static boolean str_equals(String a, String b) {
         return a == null ? b == null : a.equals(b);
     }
 

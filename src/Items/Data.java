@@ -40,7 +40,12 @@ public class Data {
         for (Slot s : slots) {
             s.adjacentSlots = new Slot[s.adjacentSlotIDs.length];
             for (int i = 0; i < s.adjacentSlots.length; ++i) {
-                s.adjacentSlots[i] = slots[s.adjacentSlotIDs[i]];
+                for (Slot t : slots) {
+                    if (t.sid == s.adjacentSlotIDs[i]) {
+                        s.adjacentSlots[i] = t;
+                        break;
+                    }
+                }
             }
         }
     }
@@ -65,9 +70,8 @@ public class Data {
     public String formattedAssignments() {
         String ret = "";
         for (Slot s : slots) {
-            ret += s.details() + " ";
-            ret += s.tutors.get(0).name;
-            for (int i = 1; i < s.tutors.size(); i++)
+            ret += s.details();
+            for (int i = 0; i < s.tutors.size(); i++)
                 ret += " " + String.valueOf(s.tutors.get(i).name);
             ret += "\n";
         }

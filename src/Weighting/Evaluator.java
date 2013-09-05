@@ -18,6 +18,9 @@ public class Evaluator {
     public static double evaluate(Data assign, Weighting w) {
         double score = 0;
         outer : for (Tutor t : assign.tutors) {
+            if (t.name.equals ("Lewin Gan")) {
+                int b = 0;
+            }
             if (t.numAssignments != t.slots.size()) {
                 // tutor should have been assigned a slot
                 // or tutor was assigned an extra slot
