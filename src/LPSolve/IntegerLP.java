@@ -10,6 +10,7 @@ import java.lang.Math;
 
 import lpsolve.LpSolve;
 import lpsolve.LpSolveException;
+import Items.Data;
 import Items.Slot;
 import Items.Tutor;
 import Weighting.Weighting;
@@ -25,9 +26,9 @@ public class IntegerLP {
     private static ArrayList<String> uniqueTimes;
     private static HashMap<String, ArrayList<Integer>> times;
 
-    public static void match(Tutor[] tutors, Slot[] slots, Weighting waiter) {
-        t = tutors;
-        s = slots;
+    public static void match(Data dat, Weighting waiter) {
+        t = dat.tutors;
+        s = dat.slots;
         w = waiter;
         n = t.length * s.length;
 

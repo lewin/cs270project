@@ -17,23 +17,19 @@ public class Butler implements Weighting {
         retval += timePrefToW[t.timeSlots[s.sid]];
         
         // add the office preference
-        retval += 75 * (s.equals("Cory") ? -1 : 1) * t.officePrefs[t.timeSlots[s.sid]];
+        retval += t.officePrefs[s.sid] > 0 ? 2 : 0;
 
         for (Slot r : t.slots) {
             if (r.day.equals(s.day)) {
                 if (s.adjacent(r)) {
                     if (t.adjacentPref == 1)
-                        retval += 200;
-                    else if (t.adjacentPref == -1)
-                        retval -= 30;
+                        retval += 1.5;
                 } else {
-                    retval -= 300;
+                    retval -= 1000;
                 }
             } else {
                 if (t.adjacentPref == -1)
-                    retval += 100;
-                else if (t.adjacentPref == 1)
-                    retval -= 50;
+                    retval += 1.5;
             }
         }
         
@@ -43,11 +39,15 @@ public class Butler implements Weighting {
 //            retval += (t.courses[i] + 1) * s.courses[i] * courseWeight;
 //        }
 
-        return retval;
+        if (retval < 0) return retval;
+        int un = 0;
+        for (int i = 0; i < t.timeSlots.length; i++)
+            if (t.timeSlots[i] == 0) un++;
+        return retval / Math.exp(un / 500.);
     }
 
     // 0: unavailable, 1: ambivalent, 2: prefer
-    private static double[] timePrefToW = { -100000000, 200, 500 };
+    private static double[] timePrefToW = { -10000, 0.01, 6 };
 
     // how important course matching is for this weighting
     private static double courseWeight = 1.0;

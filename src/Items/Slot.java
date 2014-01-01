@@ -29,6 +29,10 @@ public class Slot {
     public void assign(Tutor t) {
         tutors.add(t);
     }
+    
+    public boolean unassign (Tutor t) {
+        return tutors.remove(t);
+    }
 
     public boolean simultaneous(Slot s) {
         return (hour == s.hour) && str_equals(day, s.day);
@@ -56,7 +60,7 @@ public class Slot {
     }
 
     public String details() {
-        return office + " " + day + " " + hour;
+        return office + " " + day + " " + hour + " " + sid;
     }
 
     @Override

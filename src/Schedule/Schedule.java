@@ -23,6 +23,7 @@ import joptsimple.OptionSpec;
 import Items.Data;
 import LPSolve.IntegerLP;
 import MaxWeightMatching.Matcher;
+import Swapper.Swapper;
 import Weighting.Butler;
 import Weighting.Chef;
 import Weighting.Evaluator;
@@ -99,23 +100,44 @@ public class Schedule {
 
             if (options.has("solver")) {
                 if (solver.value(options).equals("maxweight")) {
-                    Matcher.match(dat.tutors, dat.slots, w);
+                    Matcher.match(dat, w);
                 } else if (solver.value(options).equals("lp")) {
-                    IntegerLP.match(dat.tutors, dat.slots, w);
+                    IntegerLP.match(dat, w);
                 } else {
                     System.err.println("Invalid solving algorithm");
                     System.exit(1);
                 }
             } else {
-                Matcher.match(dat.tutors, dat.slots, w);
+                Matcher.match(dat, w);
             }
-//            String [] officers = new String [dat.tutors.length];
+            
+            double s = 0;
+            {
+                String assign = dat.formattedAssignments();
+                double[] r = Evaluator.evaluate (dat, w);
+                double stdmin = r[0], maxhap = r[1];
+                s = r[1];
+                System.out.println(assign);
+                System.out.println(stdmin + " " + maxhap);
+            }
+            
+            System.out.println ("Swapping");
+            // now do some random swapping to make it stable
+            Swapper.stabilize(dat, w);
+            
+            
+//            int sum = 0;
 //            for (int i = 0; i < dat.tutors.length; i++) {
-//                officers [i] = dat.tutors[i].name;
+//                System.out.println (dat.tutors[i].name);
+//                int count = 0;
+//                for (int j = 0; j < dat.tutors[i].timeSlots.length; j++) {
+//                    count += dat.tutors[i].timeSlots[j] > 0 ? 1 : 0;
+//                }
+//                System.out.println (count / 2);
+//                sum += count / 2;
 //            }
-//            Arrays.sort(officers);
-//            for (int i = 0; i < dat.tutors.length; i++)
-//                System.out.println (officers[i]);
+//           
+//            System.out.println ((double)sum / dat.tutors.length);
                 
             
             if (options.has("output")) {
@@ -123,8 +145,30 @@ public class Schedule {
                 fout.println(dat.assignments());
                 fout.close();
             } else {
-                System.out.println(dat.formattedAssignments());
-                System.out.println(Evaluator.evaluate(dat, w));
+//                int outit = 5;
+//                int iterations = 100000;
+//                
+//                double [][] weight;
+//                
+//                double stdmin = 1e100;
+//                double maxhap = 0;
+//                String assign = "";
+//                for (int i = 0; i < iterations; i++) {
+//                    dat.clearAssignments();
+//                    Matcher.match (dat, w);
+//                    double [] arr = Evaluator.evaluate(dat, w);
+//                    if (arr[1] > maxhap) {
+//                        stdmin = Math.min (stdmin, arr[0]);
+//                        maxhap = arr[1];
+//                        assign = dat.formattedAssignments();
+//                    }
+//                }
+                String assign = dat.formattedAssignments();
+                double[] r = Evaluator.evaluate (dat, w);
+                double stdmin = r[0], maxhap = r[1];
+                System.out.println(assign);
+                System.out.println(stdmin + " " + maxhap);
+                System.out.println (maxhap - s);
             }
 
 //            for (int i = 0; i < dat.slots.length; i++) {

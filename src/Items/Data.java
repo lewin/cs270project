@@ -9,6 +9,7 @@
 
 package Items;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -36,7 +37,7 @@ public class Data {
      * Initialize some data fields not done by the JSON parser.
      */
     public void init() {
-        // initialize the adjacenct slot references
+        // initialize the adjacent slot references
         for (Slot s : slots) {
             s.adjacentSlots = new Slot[s.adjacentSlotIDs.length];
             for (int i = 0; i < s.adjacentSlots.length; ++i) {
@@ -77,12 +78,28 @@ public class Data {
         }
         return ret.trim();
     }
+    
+    public void clearAssignments() {
+        for (int i = 0; i < tutors.length; i++)
+            tutors[i].slots = new ArrayList <Slot> ();
+        for (int i = 0; i < slots.length; i++)
+            slots[i].tutors = new ArrayList <Tutor> ();
+    }
 
     @Override
     public String toString() {
         return "Data {" + "courseNames=" + Arrays.toString(courseNames)
                 + ", tutors=" + Arrays.toString(tutors) + ", slots="
                 + Arrays.toString(slots) + "}";
+    }
+    
+    @Override
+    public Data clone() {
+        Data ret = new Data();
+//        ret.courseNames = courseNames.clone();
+        ret.tutors = tutors.clone();
+        ret.slots = slots.clone();
+        return ret;
     }
 
 }

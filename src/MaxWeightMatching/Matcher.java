@@ -3,6 +3,7 @@ package MaxWeightMatching;
 import java.util.Arrays;
 import java.util.PriorityQueue;
 
+import Items.Data;
 import Items.Slot;
 import Items.Tutor;
 import Weighting.Weighting;
@@ -16,9 +17,9 @@ public class Matcher {
     private static boolean [] used;
     private static boolean [] ignore;
 
-    public static void match(Tutor[] tutors, Slot[] slots, Weighting waiter) {
-        t = tutors;
-        s = slots;
+    public static void match(Data dat, Weighting waiter) {
+        t = dat.tutors;
+        s = dat.slots;
         w = waiter;
 
         n = t.length + s.length;

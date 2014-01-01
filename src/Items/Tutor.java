@@ -36,6 +36,10 @@ public class Tutor {
         slots.add (s);
     }
     
+    public boolean unassign (Slot s) {
+        return slots.remove(s);
+    }
+    
     @Override
     public String toString() {
         return tid + "@" + name;
