@@ -7,64 +7,63 @@ package Items;
 import java.util.ArrayList;
 
 public class Slot {
-    public Slot() {
-        tutors = new ArrayList<Tutor>();
-    }
+  public Slot() {
+    tutors = new ArrayList<Tutor>();
+  }
 
-    // identifying information
-    public int sid;
-    public String name;
-    public String day;
-    public int hour;
-    public String office;
+  // identifying information
+  public int sid;
+  public String name;
+  public String day;
+  public int hour;
+  public String office;
 
-    // preference information
-    public int[] courses;
-    public int[] adjacentSlotIDs;
-    public Slot[] adjacentSlots;
-    public Slot[] simultaneousSlots;
+  // preference information
+  public int[] courses;
+  public int[] adjacentSlotIDs;
+  public Slot[] adjacentSlots;
+  public Slot[] simultaneousSlots;
 
-    public ArrayList<Tutor> tutors;
+  public ArrayList<Tutor> tutors;
 
-    public void assign(Tutor t) {
-        tutors.add(t);
-    }
-    
-    public boolean unassign (Tutor t) {
-        return tutors.remove(t);
-    }
+  public void assign(Tutor t) {
+    tutors.add(t);
+  }
 
-    public boolean simultaneous(Slot s) {
-        return (hour == s.hour) && str_equals(day, s.day);
-    }
+  public boolean unassign(Tutor t) {
+    return tutors.remove(t);
+  }
 
-    public boolean adjacent(Slot s) {
-        for (int i = 0; i < adjacentSlots.length; i++)
-            if (adjacentSlots[i].equals(s))
-                return true;
-        return false;
-    }
+  public boolean simultaneous(Slot s) {
+    return (hour == s.hour) && str_equals(day, s.day);
+  }
 
-    @Override
-    public boolean equals(Object other) {
-        if (!(other instanceof Slot))
-            return false;
-        return sid == ((Slot) other).sid && hour == ((Slot) other).hour
-                && str_equals(name, ((Slot) other).name)
-                && str_equals(day, ((Slot) other).day)
-                && str_equals(office, ((Slot) other).office);
-    }
+  public boolean adjacent(Slot s) {
+    for (int i = 0; i < adjacentSlots.length; i++)
+      if (adjacentSlots[i].equals(s))
+        return true;
+    return false;
+  }
 
-    public static boolean str_equals(String a, String b) {
-        return a == null ? b == null : a.equals(b);
-    }
+  @Override
+  public boolean equals(Object other) {
+    if (!(other instanceof Slot))
+      return false;
+    return sid == ((Slot) other).sid && hour == ((Slot) other).hour
+        && str_equals(name, ((Slot) other).name) && str_equals(day, ((Slot) other).day)
+        && str_equals(office, ((Slot) other).office);
+  }
 
-    public String details() {
-        return office + " " + day + " " + hour + " " + sid;
-    }
+  public static boolean str_equals(String a, String b) {
+    return a == null ? b == null : a.equals(b);
+  }
 
-    @Override
-    public String toString() {
-        return sid + "@" + name;
-    }
+  public String details() {
+    return office + " " + day + " " + hour + " " + sid;
+  }
+
+  @Override
+  public String toString() {
+    return sid + "@" + name;
+  }
 }
