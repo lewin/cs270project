@@ -111,10 +111,18 @@ public class Schedule {
                 Matcher.match(dat, w);
             }
             
+            for (int i = 0; i < dat.tutors.length; i++) {
+                int c = 0;
+                for (int j = 0; j < dat.tutors[i].timeSlots.length; j++)
+                    if (dat.tutors[i].timeSlots[j] != 0)
+                        c++;
+                System.out.println (dat.tutors[i].name + " " + c / 2);
+            }
+            
             double s = 0;
             {
                 String assign = dat.formattedAssignments();
-                double[] r = Evaluator.evaluate (dat, w);
+                double[] r = Evaluator.evaluate (dat, w, true);
                 double stdmin = r[0], maxhap = r[1];
                 s = r[1];
                 System.out.println(assign);
@@ -138,45 +146,19 @@ public class Schedule {
 //            }
 //           
 //            System.out.println ((double)sum / dat.tutors.length);
-                
             
             if (options.has("output")) {
                 PrintWriter fout = new PrintWriter(fileout.value(options));
                 fout.println(dat.assignments());
                 fout.close();
             } else {
-//                int outit = 5;
-//                int iterations = 100000;
-//                
-//                double [][] weight;
-//                
-//                double stdmin = 1e100;
-//                double maxhap = 0;
-//                String assign = "";
-//                for (int i = 0; i < iterations; i++) {
-//                    dat.clearAssignments();
-//                    Matcher.match (dat, w);
-//                    double [] arr = Evaluator.evaluate(dat, w);
-//                    if (arr[1] > maxhap) {
-//                        stdmin = Math.min (stdmin, arr[0]);
-//                        maxhap = arr[1];
-//                        assign = dat.formattedAssignments();
-//                    }
-//                }
                 String assign = dat.formattedAssignments();
-                double[] r = Evaluator.evaluate (dat, w);
+                double[] r = Evaluator.evaluate (dat, w, true);
                 double stdmin = r[0], maxhap = r[1];
                 System.out.println(assign);
                 System.out.println(stdmin + " " + maxhap);
                 System.out.println (maxhap - s);
             }
-
-//            for (int i = 0; i < dat.slots.length; i++) {
-//                System.out.print (dat.slots[i].details());
-//                for (int j = 0; j < dat.slots[i].adjacentSlots.length; j++)
-//                    System.out.print (" " + dat.slots[i].adjacentSlots[j].details());
-//                System.out.println();
-//            }
             
         } catch (IOException e) {
             e.printStackTrace();

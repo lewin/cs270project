@@ -11,11 +11,11 @@ import Items.Slot;
 import Items.Tutor;
 
 public class Evaluator {
-    public static final double PENALTY = 100000;
+    public static final double PENALTY = 1000000;
     public static final double ADJACENT_PREF = 50;
     public static final double ADJACENT_DISPREF = 50;
 
-    public static double[] evaluate(Data assign, Weighting w) {
+    public static double[] evaluate(Data assign, Weighting w, boolean print) {
         double score = 0;
         double [] scores = new double [assign.tutors.length];
         int idx = 0;
@@ -24,7 +24,8 @@ public class Evaluator {
             if (t.numAssignments != t.slots.size()) {
                 // tutor should have been assigned a slot
                 // or tutor was assigned an extra slot
-                score -= PENALTY;
+//                score -= PENALTY;
+//              System.out.println ("COULD NOT SCHEDULE " + t.name);
                 continue;
             }
 
@@ -43,7 +44,7 @@ public class Evaluator {
             for (Slot s : temp) {
                 d += w.weight (t, s);
                 if (t.timeSlots[s.sid] == 0) {
-                    score -= PENALTY;
+                    score -= PENALTY * 100;
 //                    System.out.println ("A");
                     continue outer; 
                 }
@@ -55,12 +56,31 @@ public class Evaluator {
             max = Math.max (max, d);
 //            System.out.println (t.name + " " + d);
             score += d;
+            if (print) {
+                if (temp.size() > 1) {
+                  System.out.println(t.name + " " + t.adjacentPref + " " +
+                          (temp.get(1).adjacent(temp.get(0)) ? 1 : 0) + " " + d);
+                } else {
+                    System.out.println(t.name + " " + d);
+                }
+                for (Slot s : t.slots)
+                    System.out.println(s.sid + " " + t.timeSlots[s.sid] + " " + s.day + " " + s.hour + " " + s.office);
+                System.out.println();
+            }
+        }
+        for (Slot s : assign.slots) {
+            boolean ok = false;
+            for (Tutor t : s.tutors) {
+                if (t.numAssignments == 2) // officer
+                    ok = true;
+            }
+            if (!ok) score -= PENALTY;
         }
         double ave = score / (double)scores.length;
         double std = 0;
         for (int i = 0; i < scores.length; i++)
             std += (scores[i] - ave) * (scores[i] - ave);
 //        System.out.println (Math.sqrt(std) + " " + min + " " + max);
-        return new double [] {std, score};
+        return new double [] {Math.sqrt(std), score};
     }
 }

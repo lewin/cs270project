@@ -14,18 +14,17 @@ public class Swapper {
     public static Random rand;
     
     public static void stabilize(Data dat, Weighting w) {
-        stabilize (dat, w, dat.tutors.length * 5000, -1);
+        stabilize (dat, w, dat.tutors.length * 50000, 1e-10);
     }
     
     public static void stabilize(Data dat, Weighting w, int iter, double thresh) {
         rand = new Random(System.currentTimeMillis());
         int N = dat.tutors.length;
-        double curbest = Evaluator.evaluate(dat, w)[1];
+        double curbest = Evaluator.evaluate(dat, w, false)[1];
         
-        // make 5 passes
         for (int q = 0; q < 5; q++) {
             // less movement the more iterations we go
-            double cthresh = thresh / (q + 1);
+            double cthresh = thresh / (10 - q) / (10 - q);
             for (int k = 5; k >= 2; k--) {
                 System.out.println(k);
                 // do k-way swaps iter times
@@ -71,7 +70,7 @@ public class Swapper {
                     }
                     
                     // only move up if at least thresh improvement
-                    double cost = Evaluator.evaluate(dat, w)[1];
+                    double cost = Evaluator.evaluate(dat, w, false)[1];
                     if (cost > curbest + cthresh) {
                         System.out.printf ("Moved up by %.6f\n", cost - curbest);
                         curbest = cost;

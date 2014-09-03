@@ -12,6 +12,10 @@ package Items;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+
 /**
  * Class directly populated by the JSON reader. Each index corresponds exactly
  * to the index in any of the courses[].
@@ -69,14 +73,16 @@ public class Data {
     }
 
     public String formattedAssignments() {
-        String ret = "";
-        for (Slot s : slots) {
-            ret += s.details();
-            for (int i = 0; i < s.tutors.size(); i++)
-                ret += " " + String.valueOf(s.tutors.get(i).name);
-            ret += "\n";
+      JsonObject jason = new JsonObject();
+      for (Slot s : slots) {
+        JsonArray j = new JsonArray();
+        for (Tutor t : s.tutors) {
+          j.add(new JsonPrimitive(t.tid));
         }
-        return ret.trim();
+        jason.add(s.name.substring(s.name.length() - 3), j);
+      }
+      
+      return jason.toString();
     }
     
     public void clearAssignments() {
