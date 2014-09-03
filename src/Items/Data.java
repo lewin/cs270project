@@ -85,6 +85,17 @@ public class Data {
       return jason.toString();
     }
     
+    public String readableFormattedAssignments() {
+      String ret = "";
+      for (Slot s : slots) {
+        ret += s.details();
+        for (int i = 0; i < s.tutors.size(); i++)
+          ret += " " + String.valueOf(s.tutors.get(i).name);
+        ret += "\n";
+      }
+      return ret.trim();
+    }
+    
     public void clearAssignments() {
         for (int i = 0; i < tutors.length; i++)
             tutors[i].slots = new ArrayList <Slot> ();

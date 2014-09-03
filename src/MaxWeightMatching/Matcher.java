@@ -47,6 +47,17 @@ public class Matcher {
         assign();
     }
     
+    private static void makeRandomPerm(int[] perm) {
+      for (int i = 0; i < perm.length; i++) {
+        perm [i] = i;
+        int j = (int)(Math.random() * (i + 1));
+        if (j == i) continue;
+        perm [i] ^= perm [j];
+        perm [j] ^= perm [i];
+        perm [i] ^= perm [j];
+    }
+    }
+    
     private static void assign() {
         // initialize graph
         g = new Graph(n);
@@ -56,24 +67,9 @@ public class Matcher {
         Arrays.fill(partner, -1);
         
         int [] perm = new int [t.length];
-        for (int i = 0; i < perm.length; i++) {
-            perm [i] = i;
-            int j = (int)(Math.random() * (i + 1));
-            if (j == i) continue;
-            perm [i] ^= perm [j];
-            perm [j] ^= perm [i];
-            perm [i] ^= perm [j];
-        }
-        
         int [] perm2 = new int [s.length];
-        for (int i = 0; i < perm2.length; i++) {
-            perm2 [i] = i;
-            int j = (int)(Math.random() * (i + 1));
-            if (j == i) continue;
-            perm2 [i] ^= perm2 [j];
-            perm2 [j] ^= perm2 [i];
-            perm2 [i] ^= perm2 [j];
-        }
+        makeRandomPerm(perm);
+        makeRandomPerm(perm2);
         
         for (int b = 0; b < t.length; b++) {
             int i = perm[b];

@@ -119,15 +119,15 @@ public class Schedule {
                 System.out.println (dat.tutors[i].name + " " + c / 2);
             }
             
-            double s = 0;
-            {
-                String assign = dat.formattedAssignments();
-                double[] r = Evaluator.evaluate (dat, w, true);
-                double stdmin = r[0], maxhap = r[1];
-                s = r[1];
-                System.out.println(assign);
-                System.out.println(stdmin + " " + maxhap);
-            }
+//            double s = 0;
+//            {
+//                String assign = dat.formattedAssignments();
+//                double[] r = Evaluator.evaluate (dat, w, false);
+//                double stdmin = r[0], maxhap = r[1];
+//                s = r[1];
+//                System.out.println(assign);
+//                System.out.println(stdmin + " " + maxhap);
+//            }
             
             System.out.println ("Swapping");
             // now do some random swapping to make it stable
@@ -149,17 +149,17 @@ public class Schedule {
             
             if (options.has("output")) {
                 PrintWriter fout = new PrintWriter(fileout.value(options));
-                fout.println(dat.assignments());
+                fout.println(dat.formattedAssignments());
                 fout.close();
             } else {
-                String assign = dat.formattedAssignments();
-                double[] r = Evaluator.evaluate (dat, w, true);
-                double stdmin = r[0], maxhap = r[1];
-                System.out.println(assign);
-                System.out.println(stdmin + " " + maxhap);
-                System.out.println (maxhap - s);
+//                String assign = dat.formattedAssignments();
+//                double[] r = Evaluator.evaluate (dat, w, true);
+//                double stdmin = r[0], maxhap = r[1];
+//                System.out.println(assign);
+//                System.out.println(stdmin + " " + maxhap);
+//                System.out.println (maxhap - s);
             }
-            
+            System.out.println ("DONE");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
