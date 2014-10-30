@@ -14,7 +14,7 @@ public class Swapper {
   public static Random rand;
 
   public static void stabilize(Data dat, Weighting w) {
-    stabilize(dat, w, dat.tutors.length * 50000, 1e-10);
+    stabilize(dat, w, dat.tutors.length * 100000, 1e-10);
   }
 
   public static void stabilize(Data dat, Weighting w, int iter, double thresh) {

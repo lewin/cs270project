@@ -44,7 +44,7 @@ public class Evaluator {
       for (Slot s : temp) {
         d += w.weight(t, s);
         if (t.timeSlots[s.sid] == 0) {
-          score -= PENALTY * 100;
+          score -= PENALTY;
           // System.out.println ("A");
           continue outer;
         }
@@ -76,7 +76,7 @@ public class Evaluator {
           ok = true;
       }
       if (!ok)
-        score -= PENALTY;
+        score -= 100 * PENALTY;
     }
     double ave = score / (double) scores.length;
     double std = 0;
