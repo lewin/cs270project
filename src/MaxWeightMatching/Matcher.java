@@ -37,6 +37,7 @@ public class Matcher {
     for (int r = 0; r < 2; r++) {
       assign();
     }
+    
     // one more time to make sure all tutors have enough slots
     // this will allow some slots to have more than one person
     // however now all slots can be used
@@ -82,7 +83,7 @@ public class Matcher {
           int j = perm2[k];
           // ignore used slots and any slots a tutor can not make
           double r = w.weight(t[i], s[j]);
-          if (!used[j] && !t[i].conflict(s[j]) && r > 0)
+          if (!used[j] && !t[i].conflict(s[j]) && r > -10)
             updateMatching(i, j + t.length, r);
           // note that this case naturally doesn't let us assign 2
           // of the same slot to one tutor.

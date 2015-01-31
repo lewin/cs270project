@@ -11,7 +11,7 @@ import Items.Slot;
 import Items.Tutor;
 
 public class Evaluator {
-  public static final double PENALTY = 1000000;
+  public static final double PENALTY = 10000000;
   public static final double ADJACENT_PREF = 50;
   public static final double ADJACENT_DISPREF = 50;
 

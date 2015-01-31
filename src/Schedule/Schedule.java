@@ -116,14 +116,16 @@ public class Schedule {
       }
 
        double s = 0;
-       {
-       String assign = dat.readableFormattedAssignments();
-       double[] r = Evaluator.evaluate (dat, w, false);
-       double stdmin = r[0], maxhap = r[1];
-       s = r[1];
-       System.out.println(assign);
-       System.out.println(stdmin + " " + maxhap);
-       }
+       do {
+         dat.clearAssignments();
+         Matcher.match(dat, w);
+         String assign = dat.readableFormattedAssignments();
+         double[] r = Evaluator.evaluate (dat, w, false);
+         double stdmin = r[0], maxhap = r[1];
+         s = r[1];
+//         System.out.println(assign);
+         System.out.println(stdmin + " " + maxhap);
+       } while (s < 0);
 
       System.out.println("Swapping");
       // now do some random swapping to make it stable
